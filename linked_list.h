@@ -2,15 +2,12 @@
 #define linked_list_H
 #include <stdio.h>
 #include <stdlib.h>
-// #include <errno.h>
-#include "posix_header_filler.h"
 #include "my_c_functions.h"
 
 typedef struct node
 {
-    char* string;
-    header* header;
-    char* file_contents;
+    int nid;
+    char* bid;
     struct node* next;
 }node;
 
@@ -30,6 +27,6 @@ node* return_next_link(node* link);
 
 void free_linked_list(node* head);
 
-int read_list_on_demand(node* head, char* file_name);
+//int read_list_on_demand(node* head, char* file_name);
 
 #endif
