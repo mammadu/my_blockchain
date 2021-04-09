@@ -26,4 +26,10 @@ int my_strcmp(char* param_1, char* param_2);
 
 void null_filler(void* pointer, int length);
 
+void split_string_word(char* destination_string, char** source_string, char delimiter);
+
+int delimiter_count(char* source_string, char delimiter);
+
+char** split_string(char* og_source_string, char delimiter);
+
 #endif

@@ -270,3 +270,59 @@ void null_filler(void* pointer, int length)
         i++;
     }
 }
+
+void split_string_word(char* destination_string, char** source_string, char delimiter)
+{
+    int i = 0;
+    while(source_string[0][i] != delimiter && i < my_strlen(source_string[0]))
+    {
+        destination_string[i] = source_string[0][i];
+        i++;
+    }
+    destination_string[i] = '\0';
+    source_string[0] = &source_string[0][i + 1];
+}
+
+int delimiter_count(char* source_string, char delimiter)
+{
+    int num_of_delim = 0;
+    int i = 0;
+    while(source_string[i] != '\0')
+    {
+        if (source_string[i] == delimiter)
+        {
+            num_of_delim++;
+        }
+        i++;
+    }
+    return num_of_delim;
+}
+    
+
+char** split_string(char* og_source_string, char delimiter)
+{
+    char* source_string = my_strdup(og_source_string);
+    //this gets the total number of delimiters in source_string
+
+
+    int num_of_delim = delimiter_count(source_string, delimiter);
+
+    //The total number of split strings is equal to num_of_delim + 1
+    char** return_array = malloc((num_of_delim + 1) * sizeof(char*));
+
+    
+    int k = 0; //index of string in retun_array
+    while (my_strlen(source_string) > 0)
+    {
+        int j = 0; //index of character in source_string
+        while(source_string[j] != delimiter)
+        {
+            j++;
+        }
+        return_array[k] = malloc((j + 1) * sizeof(char));
+        split_string_word(return_array[k], &source_string, delimiter);
+        k++;
+    }
+    return return_array;
+    
+}
