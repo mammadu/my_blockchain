@@ -32,4 +32,6 @@ int delimiter_count(char* source_string, char delimiter);
 
 char** split_string(char* og_source_string, char delimiter);
 
+void free_string_array(char** string_array, int string_count);
+
 #endif

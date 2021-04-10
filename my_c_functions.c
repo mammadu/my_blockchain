@@ -297,18 +297,16 @@ int delimiter_count(char* source_string, char delimiter)
     }
     return num_of_delim;
 }
-    
 
 char** split_string(char* og_source_string, char delimiter)
 {
     char* source_string = my_strdup(og_source_string);
-    //this gets the total number of delimiters in source_string
-
+    char* source_string_start = source_string; //this variable stores the start location of source_string for freeing later
 
     int num_of_delim = delimiter_count(source_string, delimiter);
+    int string_count = num_of_delim + 1; //The total number of split strings is equal to num_of_delim + 1
 
-    //The total number of split strings is equal to num_of_delim + 1
-    char** return_array = malloc((num_of_delim + 1) * sizeof(char*));
+    char** return_array = malloc((string_count) * sizeof(char*));
 
     
     int k = 0; //index of string in retun_array
@@ -323,6 +321,17 @@ char** split_string(char* og_source_string, char delimiter)
         split_string_word(return_array[k], &source_string, delimiter);
         k++;
     }
+    free(source_string_start);
     return return_array;
-    
+}
+
+void free_string_array(char** string_array, int string_count)
+{
+    int i = 0;
+    while (i < string_count)
+    {
+        free(string_array[i]);
+        i++;
+    }
+    free(string_array);
 }
