@@ -336,7 +336,7 @@ void free_string_array(char** string_array, int string_count)
     free(string_array);
 }
 
-//returns 0 if string is in compliance with Std. rules of the use of space otherwise return 1
+//returns 0 if source_string is in compliance with Std. rules of the use of space otherwise return 1
 //1. no space at the beggining or the end of the of the char*
 //2. no consecutive use of the space character  
 int space_validator(char* source_string)

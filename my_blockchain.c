@@ -32,6 +32,11 @@ char* readline()
     return str; //if no characters are passed, str == \0
 }
 
+int input_validation(char* )
+{
+    //space_validator
+}
+
 int main()
 {
     char* input = readline();
