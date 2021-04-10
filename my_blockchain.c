@@ -32,9 +32,10 @@ char* readline()
     return str; //if no characters are passed, str == \0
 }
 
-int input_validation(char* )
+int input_validation(char* string)
 {
-    //space_validator
+    int validation = space_validator(string);
+    return validation;
 }
 
 int main()
@@ -42,19 +43,24 @@ int main()
     char* input = readline();
     int space_count = delimiter_count(input, ' ');
     
-
     while(input[0] == '\0' || my_strcmp(input, "quit") != 0) 
     {
-        char** string_array = split_string(input, ' ');
-        // printf("string_array [%d] = %s\n", 0, string_array[0]);
-        int i = 0;
-        while (i < space_count + 1)
+        if (input_validation(input) == 0)
         {
-            printf(" [%d] = \n", i);
-            free(string_array[i]);
-            i++;
+            char** string_array = split_string(input, ' ');
+            // printf("string_array [%d] = %s\n", 0, string_array[0]);
+            int i = 0;
+            while (i < space_count + 1)
+            {
+                free(string_array[i]);
+                i++;
+            }
+            free(string_array);
         }
-        free(string_array);
+        else
+        {
+            printf("Give me a good string please\n");
+        }
         input = readline();
         space_count = delimiter_count(input, ' ');
     }
