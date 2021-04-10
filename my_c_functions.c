@@ -313,7 +313,7 @@ char** split_string(char* og_source_string, char delimiter)
     while (my_strlen(source_string) > 0)
     {
         int j = 0; //index of character in source_string
-        while(source_string[j] != delimiter)
+        while(source_string[j] != delimiter && j < my_strlen(source_string))
         {
             j++;
         }
