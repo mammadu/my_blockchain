@@ -37,6 +37,14 @@ char* readline()
 int input_validation(char* string)
 {
     int validation = space_validator(string);
+    /*
+    1: no more resources available on the computer
+    2: this node already exists
+    3: this block already exists
+    4:  node doesn't exist
+    5: block doesn't exist
+    6: command not found
+    */
     return validation;
 }
 
@@ -58,10 +66,12 @@ int main()
                 printf("string_array [%d] = %s\n", i, string_array[i]);
                 i++;
             }
+            //write commad to backup.txt file
             free_string_array(string_array, string_count);
         }
         else
-        {
+        {   
+            //print the error
             printf("Give me a good string please\n");
         }
         char* temp = input; //we make a temporay string to free everything stored at that location.
