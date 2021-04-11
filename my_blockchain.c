@@ -48,8 +48,44 @@ int input_validation(char* string)
     return validation;
 }
 
+int select_option(int argc, char** argv)
+{
+    int i = 0;
+    if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0)
+    {
+        printf("//run add node \n");
+    }
+    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0)
+    {
+        printf("//run add block\n"); 
+    }
+    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0)
+    {
+        printf("//run rm node \n");
+    }
+    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0)
+    {
+        printf("//run rm block \n");
+    }
+    else if (my_strcmp(argv[0], "ls") == 0)
+    {
+        printf("//ls\n");
+    }
+    else if (my_strcmp(argv[0], "sync") == 0)
+    {
+        printf("//sync\n");
+    }
+    else
+    {
+        return 6;
+    }
+
+    return 6;//???????
+}
+
 int main()
 {
+    //initialized linked list here
     char* input = readline();
     int space_count = delimiter_count(input, ' ');
     
@@ -59,6 +95,9 @@ int main()
         {
             int string_count = delimiter_count(input, ' ') + 1;
             char** string_array = split_string(input, ' ');
+
+            select_option(string_count, string_array);
+
             // printf("string_array [%d] = %s\n", 0, string_array[0]);
             int i = 0;
             while (i < string_count)

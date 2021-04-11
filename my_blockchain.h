@@ -7,4 +7,8 @@
 
 char* readine();
 
+int input_validation(char* string);
+
+int select_option(int argc, char** argv);
+
 #endif
