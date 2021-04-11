@@ -83,9 +83,37 @@ int select_option(int argc, char** argv)
     return 6;//???????
 }
 
+void prompt(sync_status* status)
+{
+    my_putstr("[");
+    char* str = malloc(2 * sizeof(char));
+    str[0] = status->status;
+    str[1] = '\0';
+    my_putstr(str);
+    char* nodes = my_itoa_base(status->nodes, 10);
+    my_putstr(nodes);
+    my_putstr("]> ");
+    free(str);
+    free(nodes);
+}
+
+void save_to_backup(char* input)
+{
+    int fd = open("backup.txt", O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
+    write(fd, input, my_strlen(input));
+    write(fd, "\n", 1);
+    close(fd);
+}
+
 int main()
 {
     //initialized linked list here
+    sync_status* status = malloc(sizeof(sync_status));
+    status->status = 's';
+    status->nodes = 0;
+    //head = load_backup(sync_status)
+    prompt(status); 
+
     char* input = readline();
     int space_count = delimiter_count(input, ' ');
     
@@ -98,14 +126,7 @@ int main()
 
             select_option(string_count, string_array);
 
-            // printf("string_array [%d] = %s\n", 0, string_array[0]);
-            int i = 0;
-            while (i < string_count)
-            {
-                printf("string_array [%d] = %s\n", i, string_array[i]);
-                i++;
-            }
-            //write commad to backup.txt file
+            save_to_backup(input);
             free_string_array(string_array, string_count);
         }
         else
@@ -115,11 +136,12 @@ int main()
         }
         char* temp = input; //we make a temporay string to free everything stored at that location.
         free(temp);
+        prompt(status);
         input = readline();
         space_count = delimiter_count(input, ' ');
     }
-
     free(input);
+    free(status);
 
     return 0;
 }
