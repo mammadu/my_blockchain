@@ -7,6 +7,11 @@
 #include <fcntl.h>
 #include <unistd.h>
 #include "my_c_functions.h"
+#include "linked_list.h"
+
+#define STDIN (0)
+#define STDOUT (1)
+#define STDERR (2)
 
 typedef struct sync_status{
     char status;
@@ -17,7 +22,7 @@ char* readine();
 
 int input_validation(char* string);
 
-int select_option(int argc, char** argv);
+int select_option(int argc, char** argv, node* head, sync_status* status);
 
 void prompt(sync_status* status);
 

@@ -9,12 +9,12 @@
 
 
 
-char* readline()
+char* readline(int input_source)
 {
     char* str = malloc(sizeof(char)); //str is malloc'd so we can free it later
     str[0] = '\0';
     char* character = malloc(sizeof(char));
-    int characters_read = read(0, character, 1);
+    int characters_read = read(input_source, character, 1);
     // printf("the character is %s\n", character);
     // printf("the value of character is %d\n", character[0]);
 
@@ -25,13 +25,13 @@ char* readline()
         free(temp);
         // free(character);
         // char* character = malloc(sizeof(char));
-        int characters_read = read(0, character, 1);
+        int characters_read = read(input_source, character, 1);
         // printf("the character is %s\n", character);
         // printf("the value of character is %d\n", character[0]);
         // printf("str is %s\n", str);
     }
     free(character);
-    return str; //if no characters are passed, str == \0
+    return str; //if no characters are passed, str == "\0"
 }
 
 int input_validation(char* string)
@@ -48,7 +48,7 @@ int input_validation(char* string)
     return validation;
 }
 
-int select_option(int argc, char** argv)
+int select_option(int argc, char** argv, node* head, sync_status* status)
 {
     int i = 0;
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0)
@@ -80,7 +80,7 @@ int select_option(int argc, char** argv)
         return 6;
     }
 
-    return 6;//???????
+    return 6;//?????
 }
 
 void prompt(sync_status* status)
@@ -105,17 +105,42 @@ void save_to_backup(char* input)
     close(fd);
 }
 
+node* load_backup(sync_status* status)
+{
+    node* head = NULL;
+    int fd = open("backup.txt", O_RDWR | O_APPEND, S_IRWXU);
+    if (fd == -1)
+    {
+        status->status = 's';
+        status->nodes = 0;
+    }
+    else
+    {
+        char* input = readline(fd);
+        while(my_strcmp(input, "\0") != 0)
+        {
+            int string_count = delimiter_count(input, ' ') + 1;
+            char** string_array = split_string(input, ' ');
+            select_option(string_count, string_array, head, status);
+            free_string_array(string_array, string_count);
+            input = readline(fd);
+        }
+    }
+
+    return head;
+}
+
 int main()
 {
     //initialized linked list here
     sync_status* status = malloc(sizeof(sync_status));
     status->status = 's';
     status->nodes = 0;
-    //head = load_backup(sync_status)
+    node* head = load_backup(status);
     prompt(status); 
 
-    char* input = readline();
-    int space_count = delimiter_count(input, ' ');
+    char* input = readline(STDIN);
+    // int space_count = delimiter_count(input, ' ');
     
     while(input[0] == '\0' || my_strcmp(input, "quit") != 0) 
     {
@@ -124,7 +149,7 @@ int main()
             int string_count = delimiter_count(input, ' ') + 1;
             char** string_array = split_string(input, ' ');
 
-            select_option(string_count, string_array);
+            select_option(string_count, string_array, head, status);
 
             save_to_backup(input);
             free_string_array(string_array, string_count);
@@ -137,8 +162,8 @@ int main()
         char* temp = input; //we make a temporay string to free everything stored at that location.
         free(temp);
         prompt(status);
-        input = readline();
-        space_count = delimiter_count(input, ' ');
+        input = readline(STDIN);
+        // space_count = delimiter_count(input, ' ');
     }
     free(input);
     free(status);
