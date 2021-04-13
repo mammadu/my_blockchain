@@ -125,10 +125,13 @@ node* load_backup(sync_status* status)
             free_string_array(string_array, string_count);
             input = readline(fd);
         }
-    }
+        free(input);
+    }    
 
     return head;
 }
+
+
 
 int main()
 {
@@ -149,9 +152,12 @@ int main()
             int string_count = delimiter_count(input, ' ') + 1;
             char** string_array = split_string(input, ' ');
 
-            select_option(string_count, string_array, head, status);
-
-            save_to_backup(input);
+            int error = select_option(string_count, string_array, head, status);
+            if (error == 0)
+            {
+                save_to_backup(input);
+            }
+            
             free_string_array(string_array, string_count);
         }
         else

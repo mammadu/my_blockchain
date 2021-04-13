@@ -11,9 +11,9 @@ typedef struct node
     struct node* next;
 }node;
 
-node* create_link_with_string(char* string);
+node* create_link_with_nid(int nid);
 
-node* create_link_with_max_string_length(int max_string_length);
+// node* create_link_with_max_string_length(int max_string_length);
 
 node* prepend_link(node* new_link, node* head);
 

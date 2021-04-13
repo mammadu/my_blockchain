@@ -1,39 +1,20 @@
 #include "linked_list.h"
 
-node* create_link_with_string(char* string)
+node* create_link_with_nid(int nid)
 {
-    int fd = open(string, O_RDONLY);
-    if(fd != -1)
-    {
-        node* link = malloc(sizeof(node));
-        link->string = my_strdup(string);
-
-        link->header = malloc(sizeof(header));
-        fill_header(link->string, link->header);
-
-        int size = my_atoi_base(link->header->size, 8);
-        link->file_contents = malloc((size + 1) * sizeof(char));
-        int bytes_read = read(fd, link->file_contents, size); //bytes read should equal size on a successful read
-        close(fd);
-        link->file_contents[size] = '\0';
-
-        link->next = NULL;
-        return link;
-    }
-    else //if it can't open the file path, return NULL
-    {
-        return NULL;
-    }
+    node* link = malloc(sizeof(node));
+    link->nid = nid;
+    return link;
 }
 
 //starts a link with memory allocated to receive a string later on
-node* create_link_with_max_string_length(int max_string_length)
-{
-    node* link = malloc(sizeof(node));
-    link->string = malloc(max_string_length * sizeof(char));
-    link->next = NULL;
-    return link;
-}
+// node* create_link_with_max_string_length(int max_string_length)
+// {
+//     node* link = malloc(sizeof(node));
+//     link->string = malloc(max_string_length * sizeof(char));
+//     link->next = NULL;
+//     return link;
+// }
 
 //adds a node before another node
 node* prepend_link(node* new_link, node* head)
