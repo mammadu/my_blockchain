@@ -395,5 +395,13 @@ int space_validator(char* source_string)
         i += 1;
     }
 
-    return 0;   
+    return 0;
+}
+
+int nbr_inbase(char c, int base)
+{
+    if (base <= 10)
+        return (c >= '0' && c <= '9');
+    return ((c >= '0' && c <= '9') || (c >= 'A' && c <= ('A' + base - 10)) || \
+    (c >= 'a' && c <= ('a' + base - 10)));
 }

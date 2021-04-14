@@ -44,5 +44,7 @@ int my_isdigit(int c);
 
 int my_str_is_numeric(char* str);
 
+int nbr_inbase(char c, int base);
+
 
 #endif

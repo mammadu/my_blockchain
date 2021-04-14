@@ -28,13 +28,15 @@ node* prepend_link(node* new_link, node* head)
 
 //loops to very end of Linked list and adds passed as argument
 void append_link(node* new_link, node* head)
-{   
+{
     node* current = head;
+
     while(current->next != NULL)
     {
         current = current->next;
     }
     current->next = new_link;
+    new_link->next = NULL;
 }
 
 //Insert node in between two nodes

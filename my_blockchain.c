@@ -50,20 +50,19 @@ int sync_evaluation(node* head, sync_status* status)
 
 int add_node(int argc, char** argv, node* head, sync_status* status)
 {
-    //
+
     if (my_str_is_numeric(argv[2]) == 0)
         return ERROR_SIX;
 
+    int nid = my_atoi_base(argv[2] , DECIMAL_BASE);
+
+    node* new_link = malloc(sizeof(node));
+    
+    new_link = create_link_with_nid(nid);
+    
+    append_link(new_link, head);
+
     return 0;
-
-    //node* latest_node = create_link_with_nid();
-
-    //argc -> counter nice to know for looping purposes
-    //argv -> is all the commands, but raw they need to be parsed!
-        //add node 12
-    //node* head-> passes the head but we need to work with the tail
-        //append_link
-    //sync_status-> our nice and cute prompt data type   
 }
 
 int add_block(int argc, char** argv, node* head, sync_status* status)
@@ -80,7 +79,6 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
         i  = add_node(argc, argv, head, status);
-        printf("i = %d\n", i);
         return i;
     }
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
@@ -138,7 +136,8 @@ void save_to_backup(char* input)
 
 node* load_backup(sync_status* status)
 {
-    node* head = NULL;
+    node* head = malloc(sizeof(node));
+    head->next = NULL;
     int fd = open("backup.txt", O_RDWR | O_APPEND, S_IRWXU);
     if (fd == -1)
     {
@@ -197,6 +196,7 @@ int main()
     status->status = 's';
     status->nodes = 0;
     node* head = load_backup(status);
+    //head->next = NULL;
     prompt(status); 
 
     char* input = readline(STDIN);
@@ -235,6 +235,7 @@ int main()
     }
     free(input);
     free(status);
+    free_linked_list(head);
 
     return 0;
 }

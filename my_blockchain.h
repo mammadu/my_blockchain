@@ -20,6 +20,8 @@
 #define ERROR_FIVE (5)
 #define ERROR_SIX (6)
 
+#define DECIMAL_BASE (10)
+
 typedef struct sync_status{
     char status;
     int nodes;
