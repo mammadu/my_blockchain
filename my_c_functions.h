@@ -40,4 +40,9 @@ void my_putchar(char c);
 
 void my_putnbr(int nb);
 
+int my_isdigit(int c);
+
+int my_str_is_numeric(char* str);
+
+
 #endif

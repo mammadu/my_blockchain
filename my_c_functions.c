@@ -104,29 +104,44 @@ int my_atoi_base(char* str, int str_base)
     return return_val;
 }
 
+int my_isdigit(int c)
+{
+    return (c >= '0' && c <= '9');
+}
+
+int my_str_is_numeric(char* str)
+{
+    int i;
+
+    i = 0;
+    while (str[i])
+        if (!my_isdigit(str[i++]))
+            return (0);
+    return (1);
+}
+
 void my_putchar(char c)
 {
-	write(1, &c, 1);
+    write(1, &c, 1);
 }
 
 void my_putnbr(int nb)
 {
-	char	c;
+    char    c;
 
-	if (nb < 0)
-	{
-		nb = -nb;
-		my_putchar('-');
-	}
-	if (nb < 10)
-		my_putchar(nb + '0');
-	else
-	{
-		my_putnbr(nb / 10);
-		my_putnbr(nb % 10);
-	}
+    if (nb < 0)
+    {
+        nb = -nb;
+        my_putchar('-');
+    }
+    if (nb < 10)
+        my_putchar(nb + '0');
+    else
+    {
+        my_putnbr(nb / 10);
+        my_putnbr(nb % 10);
+    }
 }
-
 
 void my_putstr(char* param_1)
 {
