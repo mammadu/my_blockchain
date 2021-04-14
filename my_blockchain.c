@@ -7,7 +7,7 @@
 //continue reading characters until read "\n"
 //return return_str
 
-
+//quick commit
 
 char* readline(int input_source)
 {
