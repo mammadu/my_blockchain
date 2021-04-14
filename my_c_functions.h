@@ -36,5 +36,8 @@ void free_string_array(char** string_array, int string_count);
 
 int space_validator(char* source_string);
 
+void my_putchar(char c);
+
+void my_putnbr(int nb);
 
 #endif

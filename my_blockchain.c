@@ -37,50 +37,74 @@ char* readline(int input_source)
 int input_validation(char* string)
 {
     int validation = space_validator(string);
-    /*
-    1: no more resources available on the computer
-    2: this node already exists
-    3: this block already exists
-    4:  node doesn't exist
-    5: block doesn't exist
-    6: command not found
-    */
     return validation;
+}
+
+/*
+int sync_evaluation(node* head, sync_status* status)
+{
+    //we need to check for difference
+    //
+}
+*/
+
+int add_node(int argc, char** argv, node* head, sync_status* status)
+{
+    //node* latest_node = create_link_with_nid();
+
+    //argc -> counter nice to know for looping purposes
+    //argv -> is all the commands, but raw they need to be parsed!
+        //add node 12
+    //node* head-> passes the head but we need to work with the tail
+        //append_link
+    //sync_status-> our nice and cute prompt data type   
+}
+
+int add_block(int argc, char** argv, node* head, sync_status* status)
+{
+    //if(current_node->block_counter + 1 > MAGIC_NUMBER)
+        //return ERROR_ONE
+    //current_node->block_counter ++ ;
+    //add new block . . .
 }
 
 int select_option(int argc, char** argv, node* head, sync_status* status)
 {
     int i = 0;
-    if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0)
+    if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
+        printf("argc = %d\n", argc);
         printf("//run add node \n");
     }
-    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0)
+    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
     {
         printf("//run add block\n"); 
     }
-    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0)
+    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
         printf("//run rm node \n");
     }
-    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0)
+    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
     {
         printf("//run rm block \n");
     }
-    else if (my_strcmp(argv[0], "ls") == 0)
+    else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
+        //we need to validate the second argument looking for a l
+        printf("argc = %d\n", argc);
         printf("//ls\n");
     }
-    else if (my_strcmp(argv[0], "sync") == 0)
+    else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
+        printf("argc = %d\n", argc);        
         printf("//sync\n");
     }
     else
     {
-        return 6;
+        return ERROR_SIX;
     }
 
-    return 6;//?????
+    return ERROR_SIX;//?????
 }
 
 void prompt(sync_status* status)
@@ -133,23 +157,23 @@ node* load_backup(sync_status* status)
 
 void print_error (int error)
 {
-    if (error == 1)
+    if (error == ERROR_ONE)
     {
         my_putstr("no more resources available on the computer\n");
     }
-    else if (error == 2)
+    else if (error == ERROR_TWO)
     {
         my_putstr("this node already exists\n");
     }
-    else if (error == 3)
+    else if (error == ERROR_THREE)
     {
         my_putstr("this block already exists\n");
     }
-    else if (error == 4)
+    else if (error == ERROR_FOUR)
     {
         my_putstr("node doesn't exist\n");
     }
-    else if (error == 5)
+    else if (error == ERROR_FIVE)
     {
         my_putstr("block doesn't exist\n");
     }
@@ -193,7 +217,7 @@ int main()
         else
         {   
             //print the error
-            error = 6;
+            error = ERROR_SIX;
             print_error(error);
         }
         char* temp = input; //we make a temporay string to free everything stored at that location.

@@ -4,6 +4,8 @@ node* create_link_with_nid(int nid)
 {
     node* link = malloc(sizeof(node));
     link->nid = nid;
+    link->block_counter = 0;
+    link->blocks = malloc(sizeof(char*) * MAGIC_NUMBER);
     return link;
 }
 
@@ -53,7 +55,7 @@ int read_list(node* head)
     while (head != NULL)
     {
         index++;
-        my_putstr(head->bid);
+        my_putnbr(head->nid);
         my_putstr("\n");
         head = head->next;
     }
@@ -99,9 +101,18 @@ void free_linked_list(node* head)
     node* temp;
     while (head != NULL)
     {
+        int i = 0;
         temp = head;
         //free(temp->nid);
-        free(temp->bid);
+        //free(temp->nid);
+        
+        while(i < temp->block_counter)
+        {
+            free(temp->blocks[i]);
+            i += 1;
+        }    
+
+        free(temp->blocks);    
         head = head->next;
         free(temp);
     }

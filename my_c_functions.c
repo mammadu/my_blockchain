@@ -104,6 +104,30 @@ int my_atoi_base(char* str, int str_base)
     return return_val;
 }
 
+void my_putchar(char c)
+{
+	write(1, &c, 1);
+}
+
+void my_putnbr(int nb)
+{
+	char	c;
+
+	if (nb < 0)
+	{
+		nb = -nb;
+		my_putchar('-');
+	}
+	if (nb < 10)
+		my_putchar(nb + '0');
+	else
+	{
+		my_putnbr(nb / 10);
+		my_putnbr(nb % 10);
+	}
+}
+
+
 void my_putstr(char* param_1)
 {
     int i = 0;
