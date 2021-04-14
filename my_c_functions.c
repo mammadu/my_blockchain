@@ -109,6 +109,7 @@ int my_isdigit(int c)
     return (c >= '0' && c <= '9');
 }
 
+//return 1 if string is numeric, otherwise return 0
 int my_str_is_numeric(char* str)
 {
     int i;

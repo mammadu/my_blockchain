@@ -50,6 +50,12 @@ int sync_evaluation(node* head, sync_status* status)
 
 int add_node(int argc, char** argv, node* head, sync_status* status)
 {
+    //
+    if (my_str_is_numeric(argv[2]) == 0)
+        return ERROR_SIX;
+
+    return 0;
+
     //node* latest_node = create_link_with_nid();
 
     //argc -> counter nice to know for looping purposes
@@ -73,8 +79,9 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     int i = 0;
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
-        printf("argc = %d\n", argc);
-        printf("//run add node \n");
+        i  = add_node(argc, argv, head, status);
+        printf("i = %d\n", i);
+        return i;
     }
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
     {
