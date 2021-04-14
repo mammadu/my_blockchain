@@ -48,18 +48,33 @@ int sync_evaluation(node* head, sync_status* status)
 }
 */
 
+int check_node_existance(node* head, int nid)
+{
+    while(head != NULL)
+    {
+        if (head->nid == nid)
+            return STDERR;
+        head = head->next;
+    }
+    return 0;
+}
+
 int add_node(int argc, char** argv, node* head, sync_status* status)
 {
-
     if (my_str_is_numeric(argv[2]) == 0)
         return ERROR_SIX;
 
     int nid = my_atoi_base(argv[2] , DECIMAL_BASE);
 
+    if (check_node_existance(head, nid) == STDERR)
+        return ERROR_TWO;
+
     node* new_link = malloc(sizeof(node));
     
     new_link = create_link_with_nid(nid);
-    
+
+    status->nodes += 1;
+
     append_link(new_link, head);
 
     return 0;
@@ -69,8 +84,8 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
 {
     //if(current_node->block_counter + 1 > MAGIC_NUMBER)
         //return ERROR_ONE
-    //current_node->block_counter ++ ;
     //add new block . . .
+     //current_node->block_counter ++ ;
 }
 
 int select_option(int argc, char** argv, node* head, sync_status* status)

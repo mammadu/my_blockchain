@@ -100,6 +100,7 @@ node* return_next_link(node* link)
 
 void free_linked_list(node* head)
 {
+    printf("blocks = %d", head->block_counter);
     node* temp;
     while (head != NULL)
     {
