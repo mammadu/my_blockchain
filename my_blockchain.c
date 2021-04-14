@@ -53,7 +53,7 @@ int check_node_existance(node* head, int nid)
     while(head != NULL)
     {
         if (head->nid == nid)
-            return STDERR;
+            return ERROR_TWO;
         head = head->next;
     }
     return 0;
