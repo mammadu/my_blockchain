@@ -131,7 +131,33 @@ node* load_backup(sync_status* status)
     return head;
 }
 
-
+void print_error (int error)
+{
+    if (error == 1)
+    {
+        my_putstr("no more resources available on the computer\n");
+    }
+    else if (error == 2)
+    {
+        my_putstr("this node already exists\n");
+    }
+    else if (error == 3)
+    {
+        my_putstr("this block already exists\n");
+    }
+    else if (error == 4)
+    {
+        my_putstr("node doesn't exist\n");
+    }
+    else if (error == 5)
+    {
+        my_putstr("block doesn't exist\n");
+    }
+    else
+    {
+        my_putstr("command not found\n");
+    }
+}
 
 int main()
 {
@@ -144,6 +170,7 @@ int main()
 
     char* input = readline(STDIN);
     // int space_count = delimiter_count(input, ' ');
+    int error;
     
     while(input[0] == '\0' || my_strcmp(input, "quit") != 0) 
     {
@@ -152,18 +179,22 @@ int main()
             int string_count = delimiter_count(input, ' ') + 1;
             char** string_array = split_string(input, ' ');
 
-            int error = select_option(string_count, string_array, head, status);
+            error = select_option(string_count, string_array, head, status);
             if (error == 0)
             {
                 save_to_backup(input);
             }
-            
+            else
+            {
+                print_error(error);
+            }            
             free_string_array(string_array, string_count);
         }
         else
         {   
             //print the error
-            printf("Give me a good string please\n");
+            error = 6;
+            print_error(error);
         }
         char* temp = input; //we make a temporay string to free everything stored at that location.
         free(temp);

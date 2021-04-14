@@ -28,4 +28,6 @@ void prompt(sync_status* status);
 
 void save_to_backup(char* input);
 
+void print_error (int error);
+
 #endif
