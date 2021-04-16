@@ -48,7 +48,7 @@ int sync_evaluation(node* head, sync_status* status)
 }
 */
 
-int check_node_existance(node* head, int nid)
+int check_node_existence(node* head, int nid)
 {
     while(head != NULL)
     {
@@ -66,7 +66,7 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
 
     int nid = my_atoi_base(argv[2] , DECIMAL_BASE);
 
-    if (check_node_existance(head, nid) == ERROR_TWO)
+    if (check_node_existence(head, nid) == ERROR_TWO)
         return ERROR_TWO;
 
     node* new_link = malloc(sizeof(node));
