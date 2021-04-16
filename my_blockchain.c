@@ -15,10 +15,11 @@ char* readline(int input_source)
     str[0] = '\0';
     char* character = malloc(sizeof(char));
     int characters_read = read(input_source, character, 1);
+    // printf("characters_read = %d\n", characters_read);
     // printf("the character is %s\n", character);
     // printf("the value of character is %d\n", character[0]);
 
-    while (character[0] != '\n')
+    while (characters_read > 0 && character[0] != '\n')
     {
         char* temp = str; //we make a temporay string to free everything stored at that location.
         str = combine_strings(temp, character);
@@ -31,6 +32,7 @@ char* readline(int input_source)
         // printf("str is %s\n", str);
     }
     free(character);
+    printf("str = %s\n", str);
     return str; //if no characters are passed, str == "\0"
 }
 
@@ -162,13 +164,19 @@ node* load_backup(sync_status* status)
     else
     {
         char* input = readline(fd);
-        while(my_strcmp(input, "\0") != 0)
+        // printf("input = %s\n", input);
+        int loop_count = 0;
+        while(input[0] != '\0')
         {
+            // printf("loop_count = %d\n", loop_count);
             int string_count = delimiter_count(input, ' ') + 1;
             char** string_array = split_string(input, ' ');
             select_option(string_count, string_array, head, status);
             free_string_array(string_array, string_count);
             input = readline(fd);
+            // printf("loop_count = %d\n", loop_count);
+            // printf("input = %s\n", input);
+            loop_count++;
         }
         free(input);
     }    
@@ -211,6 +219,7 @@ int main()
     status->status = 's';
     status->nodes = 0;
     node* head = load_backup(status);
+    int node_count = read_list(head);
     //head->next = NULL;
     prompt(status); 
 
