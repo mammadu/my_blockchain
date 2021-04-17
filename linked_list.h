@@ -6,7 +6,7 @@
 
 typedef struct blocks_list
 {
-    char* bid;
+    int bid;
     struct blocks_list* next;
 }blocks;
 

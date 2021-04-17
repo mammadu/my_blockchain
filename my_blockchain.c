@@ -91,13 +91,17 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             printf("%d\n", head->nid);
         }
-        else
+        else if(my_strcmp("-l", argv[1]) == 0)
         {
             while (head->blocks != NULL)
             {
-                printf("%s", head->blocks->bid);
+                printf("%d", head->blocks->bid);
                 head->blocks = head->blocks->next; 
             }
+        }
+        else
+        {
+            return ERROR_SIX;
         }
             
         head = head->next;
@@ -107,10 +111,27 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
 
 int add_block(int argc, char** argv, node* head, sync_status* status)
 {
+    //add block bid nid
+    if (my_str_is_numeric(argv[2]) == 0 || my_str_is_numeric(argv[3]) == 0)
+        return ERROR_SIX;
+    int bid = my_atoi_base(argv[2], DECIMAL_BASE);
+    int nid = my_atoi_base(argv[2], DECIMAL_BASE);
+
+    while(head != NULL)
+    {
+        if(head->nid == nid)
+        {
+            //add block here :D
+        }
+        head = head->next;
+    }
+
     //if(current_node->block_counter + 1 > MAGIC_NUMBER)
         //return ERROR_ONE
     //add new block . . .
      //current_node->block_counter ++ ;
+
+    return 0;
 }
 
 int select_option(int argc, char** argv, node* head, sync_status* status)
@@ -123,7 +144,9 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
     {
-        printf("//run add block\n"); 
+        //printf("//run add block\n"); 
+        i = add_block(argc, argv, head, status);
+        return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {

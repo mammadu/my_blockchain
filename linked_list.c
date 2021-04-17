@@ -6,6 +6,7 @@ node* create_link_with_nid(int nid)
     link->nid = nid;
     link->block_counter = 0;
     link->blocks = malloc(sizeof(blocks));
+    link->blocks;
     link->blocks->next = NULL;
     return link;
 }
