@@ -78,6 +78,7 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
         head->nid = new_link->nid;
         head->blocks = new_link->blocks;
         head->next = new_link->next;
+        free(new_link);
     }
     else
     {
@@ -102,61 +103,43 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             while (head->blocks != NULL)
             {
-                printf("Humble\n");
                 printf("%s", head->blocks->bid);
                 head->blocks = head->blocks->next; 
             }
         }
         else
-        }
         {
             return ERROR_SIX;
-            
-        head = head->next;
-    }
-    return 0;
-}
-
-int add_block(int argc, char** argv, node* head, sync_status* status)
-{
-    //add block bid nid
-    int node_existence = 0;  
-    char* bid = my_strdup(argv[2]);
-    
-    if (my_strcmp(argv[3], "*") == 0)
-    {
-        //run wildcard;
-        return 0;
-    }
-    
-    int nid = my_atoi_base(argv[3], DECIMAL_BASE);
-
-    while(head != NULL)
-    {
-        if(head->nid == nid)
-        {
-            node_existence = 1;
-            int check = check_bid(head->blocks, bid);
-            
-            if (check == 0)
-            {
-                blocks* to_append = create_block_with_bid(bid);
-                append_block(to_append, head->blocks);
-            }
-            else
-            {
-                return ERROR_THREE;
-            }
         }
+            
         head = head->next;
     }
-
-    if (node_existence == 0)
-        return ERROR_FOUR;
-
-
     return 0;
 }
+
+// int add_block(int argc, char** argv, node* head, sync_status* status)
+// {
+//     //add block bid nid  
+//     char* bid = my_strdup(argv[2]);
+//     if (my_strcmp(argv[3], "*"))
+//     {
+//         //run wildcard;
+//     }
+//     else
+//     {
+//         int nid = my_atoi_base(argv[3], DECIMAL_BASE);
+//         while(head != NULL)
+//         {
+//             if(head->nid == nid)
+//             {
+//                 //add block here :D
+//             }
+//             head = head->next;
+//         }
+//     }
+
+//     return 0;
+// }
 
 int select_option(int argc, char** argv, node* head, sync_status* status)
 {
@@ -246,6 +229,7 @@ node* load_backup(sync_status* status)
             char** string_array = split_string(input, ' ');
             select_option(string_count, string_array, head, status);
             free_string_array(string_array, string_count);
+            free(input);
             input = readline(fd);
             // printf("loop_count = %d\n", loop_count);
             // printf("input = %s\n", input);
