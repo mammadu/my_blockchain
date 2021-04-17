@@ -71,13 +71,20 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
     if (check_node_existence(head, nid) == ERROR_TWO)
         return ERROR_TWO;
 
-    node* new_link = malloc(sizeof(node));
-    
-    new_link = create_link_with_nid(nid);
+    node* new_link = create_link_with_nid(nid);
+
+    if (status->nodes == 0)
+    {
+        head->nid = new_link->nid;
+        head->blocks = new_link->blocks;
+        head->next = new_link->next;
+    }
+    else
+    {
+        append_link(new_link, head);
+    }
 
     status->nodes += 1;
-
-    append_link(new_link, head);
 
     return 0;
 }
@@ -101,9 +108,9 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
             }
         }
         else
+        }
         {
             return ERROR_SIX;
-        }
             
         head = head->next;
     }
@@ -162,7 +169,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
     {
         //printf("//run add block\n"); 
-        i = add_block(argc, argv, head, status);
+        // i = add_block(argc, argv, head, status);
         return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
@@ -218,8 +225,9 @@ void save_to_backup(char* input)
 
 node* load_backup(sync_status* status)
 {
-    node* head = malloc(sizeof(node));
-    head->next = NULL;
+    node* head = create_link_with_nid(0);
+    // node* head = malloc(sizeof(node));
+    // head->next = NULL;
     int fd = open("backup.txt", O_RDWR | O_APPEND, S_IRWXU);
     if (fd == -1)
     {
@@ -244,8 +252,7 @@ node* load_backup(sync_status* status)
             loop_count++;
         }
         free(input);
-    }    
-
+    }
     return head;
 }
 
