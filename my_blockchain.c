@@ -102,7 +102,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             while (head->blocks != NULL)
             {
-                printf("LOCKITO\n");
+                //printf("LOCKITO\n");
                 printf("%s", head->blocks->bid);
                 head->blocks = head->blocks->next; 
             }
