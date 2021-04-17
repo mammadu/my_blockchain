@@ -33,7 +33,12 @@ node* return_next_link(node* link);
 
 void free_linked_list(node* head);
 
-int check_bid(blocks* head);
+blocks* create_block_with_bid(char* bid);
+
+int check_bid(blocks* head, char* bid);
+
+void append_block(blocks* new_link, blocks* head);
+
 
 //int read_list_on_demand(node* head, char* file_name);
 

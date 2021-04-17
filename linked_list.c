@@ -1,7 +1,40 @@
 #include "linked_list.h"
 
-int check_bid(blocks* head)
+void append_block(blocks* new_link, blocks* head)
 {
+    if (head == NULL)
+    {
+        head = new_link;
+    }
+
+    while(head->next != NULL)
+    {
+        head = head->next;
+    }
+    head->next = new_link;
+    new_link->next = NULL;
+}
+
+blocks* create_block_with_bid(char* bid)
+{
+    blocks* new_block = malloc(sizeof(blocks));
+    new_block->bid = my_strdup(bid);
+    new_block->next = NULL;
+
+    return new_block;
+}
+
+
+//if check_bid return -1 it found a bid otherwise return 0 which means there was not bid.
+int check_bid(blocks* head, char* bid)
+{
+    while(head != NULL)
+    {
+        if(my_strcmp(bid, head->bid))
+        {
+            return -1;
+        }
+    }
     return 0;
 }
 
@@ -11,6 +44,7 @@ node* create_link_with_nid(int nid)
     link->nid = nid;
     //link->blocks = malloc(sizeof(blocks));
     link->blocks = NULL;
+    link->next = NULL;
     //link->blocks->next = NULL;
     return link;
 }
