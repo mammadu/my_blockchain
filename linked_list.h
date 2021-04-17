@@ -6,14 +6,13 @@
 
 typedef struct blocks_list
 {
-    int bid;
+    char* bid;
     struct blocks_list* next;
 }blocks;
 
 typedef struct node
 {
     int nid;
-    int block_counter;
     blocks* blocks;
     struct node* next;
 }node;
@@ -33,6 +32,8 @@ int read_list(node* head);
 node* return_next_link(node* link);
 
 void free_linked_list(node* head);
+
+int check_bid(blocks* head);
 
 //int read_list_on_demand(node* head, char* file_name);
 

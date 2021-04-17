@@ -95,7 +95,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             while (head->blocks != NULL)
             {
-                printf("%d", head->blocks->bid);
+                printf("%s", head->blocks->bid);
                 head->blocks = head->blocks->next; 
             }
         }
@@ -111,11 +111,16 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
 
 int add_block(int argc, char** argv, node* head, sync_status* status)
 {
-    //add block bid nid
-    if (my_str_is_numeric(argv[2]) == 0 || my_str_is_numeric(argv[3]) == 0)
-        return ERROR_SIX;
-    int bid = my_atoi_base(argv[2], DECIMAL_BASE);
-    int nid = my_atoi_base(argv[2], DECIMAL_BASE);
+    //add block bid nid  
+    char* bid = my_strdup(argv[2]);
+    if (argv[3] == '*');
+    {
+        //run wildcard;
+    }
+    else
+    {
+        int nid = my_atoi_base(argv[3], DECIMAL_BASE);
+    }
 
     while(head != NULL)
     {
@@ -125,11 +130,6 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
         }
         head = head->next;
     }
-
-    //if(current_node->block_counter + 1 > MAGIC_NUMBER)
-        //return ERROR_ONE
-    //add new block . . .
-     //current_node->block_counter ++ ;
 
     return 0;
 }

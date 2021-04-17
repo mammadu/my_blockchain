@@ -1,13 +1,17 @@
 #include "linked_list.h"
 
+int check_bid(blocks* head)
+{
+    return 0;
+}
+
 node* create_link_with_nid(int nid)
 {
     node* link = malloc(sizeof(node));
     link->nid = nid;
-    link->block_counter = 0;
-    link->blocks = malloc(sizeof(blocks));
-    link->blocks;
-    link->blocks->next = NULL;
+    //link->blocks = malloc(sizeof(blocks));
+    link->blocks = NULL;
+    //link->blocks->next = NULL;
     return link;
 }
 
@@ -102,7 +106,6 @@ node* return_next_link(node* link)
 
 void free_linked_list(node* head)
 {
-    printf("blocks = %d", head->block_counter);
     node* temp;
     while (head != NULL)
     {
