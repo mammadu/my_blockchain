@@ -32,7 +32,7 @@ char* readline(int input_source)
         // printf("str is %s\n", str);
     }
     free(character);
-    printf("str = %s\n", str);
+
     return str; //if no characters are passed, str == "\0"
 }
 
@@ -82,6 +82,29 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
+int ls_l(int argc, char** argv, node* head, sync_status* status)
+{
+    head = head->next;
+    while(head != NULL)
+    {
+        if (!argv[1])
+        {
+            printf("%d\n", head->nid);
+        }
+        else
+        {
+            while (head->blocks != NULL)
+            {
+                printf("%s", head->blocks->bid);
+                head->blocks = head->blocks->next; 
+            }
+        }
+            
+        head = head->next;
+    }
+    return 0;
+}
+
 int add_block(int argc, char** argv, node* head, sync_status* status)
 {
     //if(current_node->block_counter + 1 > MAGIC_NUMBER)
@@ -113,8 +136,8 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
         //we need to validate the second argument looking for a l
-        printf("argc = %d\n", argc);
-        printf("//ls\n");
+        i  = ls_l(argc, argv, head, status);
+        return i;
     }
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
@@ -145,6 +168,8 @@ void prompt(sync_status* status)
 
 void save_to_backup(char* input)
 {
+    if(my_strcmp("ls", input) == 0 || my_strcmp("ls -l", input) == 0)
+        return;
     int fd = open("backup.txt", O_RDWR | O_CREAT | O_APPEND, S_IRWXU);
     write(fd, input, my_strlen(input));
     write(fd, "\n", 1);

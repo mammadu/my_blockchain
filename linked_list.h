@@ -4,13 +4,17 @@
 #include <stdlib.h>
 #include "my_c_functions.h"
 
-#define MAGIC_NUMBER (42)
+typedef struct blocks_list
+{
+    char* bid;
+    struct blocks_list* next;
+}blocks;
 
 typedef struct node
 {
     int nid;
     int block_counter;
-    char** blocks;
+    blocks* blocks;
     struct node* next;
 }node;
 
