@@ -94,6 +94,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
 {
     while(head != NULL)
     {
+        blocks* temp = head->blocks;
         if (!argv[1])
         {
             printf("%d\n", head->nid);
@@ -102,8 +103,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             while (head->blocks != NULL)
             {
-                //printf("LOCKITO\n");
-                printf("%s", head->blocks->bid);
+                printf("%d: %s,\n", head->nid, head->blocks->bid);
                 head->blocks = head->blocks->next; 
             }
         }
@@ -111,7 +111,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             return ERROR_SIX;
         }
-            
+        head->blocks = temp;
         head = head->next;
     }
     return 0;
@@ -137,13 +137,12 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
         {
             node_existence = 1;
             int check = check_bid(head->blocks, bid);
-            // printf("check = %d\n", check);
+            printf("check = %d\n", check);
             if (check == 0)
             {
                 blocks* to_append = create_block_with_bid(bid);
                 if (head->blocks == NULL)
                 {
-                    printf("we made it bois\n");
                     head->blocks = to_append;
                 }
                 else

@@ -30,10 +30,11 @@ int check_bid(blocks* head, char* bid)
 {
     while(head != NULL)
     {
-        if(my_strcmp(bid, head->bid))
+        if(my_strcmp(bid, head->bid) == 0)
         {
             return -1;
         }
+        head = head->next;
     }
     return 0;
 }
