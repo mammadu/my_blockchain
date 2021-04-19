@@ -2,10 +2,10 @@
 
 void append_block(blocks* new_link, blocks* head)
 {
-    if (head == NULL)
-    {
-        head = new_link;
-    }
+    // if (head == NULL)
+    // {
+    //     head = new_link;
+    // }
 
     while(head->next != NULL)
     {

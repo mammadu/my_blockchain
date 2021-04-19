@@ -137,11 +137,19 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
         {
             node_existence = 1;
             int check = check_bid(head->blocks, bid);
-            
+            // printf("check = %d\n", check);
             if (check == 0)
             {
                 blocks* to_append = create_block_with_bid(bid);
-                append_block(to_append, head->blocks);
+                if (head->blocks == NULL)
+                {
+                    printf("we made it bois\n");
+                    head->blocks = to_append;
+                }
+                else
+                {
+                    append_block(to_append, head->blocks);
+                }
             }
             else
             {
@@ -169,7 +177,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
     {
         //printf("//run add block\n"); 
-        // i = add_block(argc, argv, head, status);
+        i = add_block(argc, argv, head, status);
         return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
