@@ -94,7 +94,6 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
 {
     while(head != NULL)
     {
-        blocks* temp = head->blocks;
         if (!argv[1])
         {
             printf("%d\n", head->nid);
@@ -103,7 +102,8 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             while (head->blocks != NULL)
             {
-                printf("%d: %s,\n", head->nid, head->blocks->bid);
+                //printf("LOCKITO\n");
+                printf("%s", head->blocks->bid);
                 head->blocks = head->blocks->next; 
             }
         }
@@ -111,9 +111,47 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             return ERROR_SIX;
         }
-        head->blocks = temp;
+            
         head = head->next;
     }
+    return 0;
+}
+
+int remove_block(int argc, char** argv, node* head, sync_status* status)
+{
+    //rm block bid... remove the bid identified blocks from all nodes where these blocks are present.
+
+    char* bid = my_strdup(argv[2]);
+
+    while(head != NULL)
+    {
+        if(my_strcmp(head->blocks->bid, bid) == 0)
+        {
+            blocks* temp = head->blocks;
+            free(head->blocks->bid);
+            free(head->blocks);
+            head->blocks = temp->next;
+        }
+
+        while(head->blocks != NULL)
+        {
+            blocks* temp;
+            
+            if(my_strcmp(head->blocks->next->bid, bid) == 0)
+            {
+                temp = head->blocks->next->next;     
+                free(head->blocks->next->bid);
+                free(head->blocks->next);
+                head->blocks->next = temp;
+                continue;
+            }
+            
+            head->blocks = head->blocks->next;
+        }
+        head = head->next;
+    }
+
+    free(bid);
     return 0;
 }
 
@@ -143,6 +181,7 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
                 blocks* to_append = create_block_with_bid(bid);
                 if (head->blocks == NULL)
                 {
+                    printf("we made it bois\n");
                     head->blocks = to_append;
                 }
                 else
