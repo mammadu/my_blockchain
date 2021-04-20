@@ -117,6 +117,46 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
+int remove_block(int argc, char** argv, node* head, sync_status* status)
+{
+    //rm block bid... remove the bid identified blocks from all nodes where these blocks are present.
+
+    char* bid = my_strdup(argv[2]);
+    
+    while(head != NULL)
+    {
+        if(my_strcmp(head->blocks->bid, bid) == 0)
+        {
+            blocks* temp = head->blocks;
+            free(head->blocks->bid);
+            free(head->blocks);
+            head->blocks = malloc(sizeof(blocks));
+            head->blocks = temp->next;
+            continue;
+        }
+
+        while(head->blocks != NULL)
+        {
+            blocks* temp;
+            
+            if(head->blocks->next != NULL && my_strcmp(head->blocks->next->bid, bid) == 0)
+            {
+                temp = head->blocks->next->next;     
+                free(head->blocks->next->bid);
+                free(head->blocks->next);
+                head->blocks->next = temp;
+                continue;
+            }
+            
+            head->blocks = head->blocks->next;
+        }
+        head = head->next;
+    }
+
+    free(bid);
+    return 0;
+}
+
 int add_block(int argc, char** argv, node* head, sync_status* status)
 {
     //add block bid nid
@@ -143,6 +183,7 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
                 blocks* to_append = create_block_with_bid(bid);
                 if (head->blocks == NULL)
                 {
+                    printf("we made it bois\n");
                     head->blocks = to_append;
                 }
                 else
@@ -185,7 +226,9 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
     {
-        printf("//run rm block \n");
+        i = remove_block(argc, argv, head, status);
+        return i;
+
     }
     else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
