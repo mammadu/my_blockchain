@@ -122,50 +122,43 @@ int remove_block(int argc, char** argv, node* head, sync_status* status)
     //rm block bid... remove the bid identified blocks from all nodes where these blocks are present.
 
     char* bid = my_strdup(argv[2]);
-    // read_list(head);
+    read_list(head);
     
     int i = 0;
     while(head != NULL)
     {
         printf("i = %d\n", i);
         printf("head->nid = %d\n", head->nid);
-        if(my_strcmp(head->blocks->bid, bid) == 0) //case if the head of the block list is == bid
+        printf("[DEBUG] head->blocks = %p\n", head->blocks);
+        if(head->blocks != NULL && my_strcmp(head->blocks->bid, bid) == 0) //case if the head of the block list is == bid
         {
             blocks* temp0 = head->blocks;
             head->blocks = head->blocks->next;
             free(temp0->bid);
             free(temp0);
-            // printf("temp = %s\n", temp->bid);
-            printf("head->blocks = %s\n", head->blocks->bid);
-            // free(head->blocks->bid);
-            // free(head->blocks);
-            // my_putstr(temp->bid);
-            // printf("temp 2 = %s\n", temp->bid);
-            // printf("head->blocks 2 = %s\n", head->blocks->bid);
-            // head->blocks = malloc(sizeof(blocks));
-            // head->blocks = temp;
-            // continue;
         }
 
-    //     while(head->blocks != NULL)
-    //     {
-    //         blocks* temp;
+        blocks* original_head_block = head->blocks;
+        while(head->blocks != NULL) //case if bid == consequent blocks
+        {
+            blocks* temp;
             
-    //         if(head->blocks->next != NULL && my_strcmp(head->blocks->next->bid, bid) == 0)
-    //         {
-    //             temp = head->blocks->next->next;     
-    //             free(head->blocks->next->bid);
-    //             free(head->blocks->next);
-    //             head->blocks->next = temp;
-    //             continue;
-    //         }
+            if(head->blocks->next != NULL && my_strcmp(head->blocks->next->bid, bid) == 0)
+            {
+                temp = head->blocks->next->next;     
+                free(head->blocks->next->bid);
+                free(head->blocks->next);
+                head->blocks->next = temp;
+                continue;
+            }
             
-    //         head->blocks = head->blocks->next;
-    //     }
-        printf("head->next->nid = %d\n", head->next->nid);
+            head->blocks = head->blocks->next;
+        }
+
+        head->blocks = original_head_block;
+
         head = head->next;
         i++;
-        printf("we made it bois\n");
     }
 
     free(bid);

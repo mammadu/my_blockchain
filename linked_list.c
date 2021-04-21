@@ -77,7 +77,7 @@ void append_link(node* new_link, node* head)
         current = current->next;
     }
     current->next = new_link;
-    new_link->next = NULL;
+    // new_link->next = NULL;
 }
 
 //Insert node in between two nodes
