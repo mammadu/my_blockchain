@@ -94,7 +94,7 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
 // {
 //     int i = 2;
 
-//     node* original_head = address_of_head[0];
+ //     node* original_head = address_of_head[0];
 
 //     if (argv[i][0] == '*')
 //     {
@@ -240,7 +240,8 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     //add block bid nid
     int node_existence = 0;  
     char* bid = my_strdup(argv[2]);
-    
+    node *temp_head = head;
+
     if (my_strcmp(argv[3], "*") == 0)
     {
         while (head != NULL)
@@ -251,39 +252,50 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
         return 0;
     }
     
-    int nid = my_atoi_base(argv[3], DECIMAL_BASE);
+    int i = 3;
 
-    while(head != NULL)
+    while (i < argc)
     {
-        if(head->nid == nid)
+        head = temp_head;
+        int nid = my_atoi_base(argv[i], DECIMAL_BASE);
+        node_existence = 0;
+
+        while(head != NULL)
         {
-            node_existence = 1;
-            int check = check_bid(head->blocks, bid);
-            // printf("check = %d\n", check);
-            if (check == 0)
+            if(head->nid == nid)
             {
-                blocks* to_append = create_block_with_bid(bid);
-                if (head->blocks == NULL)
+                node_existence = 1;
+                int check = check_bid(head->blocks, bid);
+                // printf("check = %d\n", check);
+                if (check == 0)
                 {
-                    // printf("we made it bois\n");
-                    head->blocks = to_append;
+                    blocks* to_append = create_block_with_bid(bid);
+                    if (head->blocks == NULL)
+                    {
+                        head->blocks = to_append;
+                    }
+                    else
+                    {
+                        append_block(to_append, head->blocks);
+                    }
                 }
                 else
                 {
-                    append_block(to_append, head->blocks);
+                        print_error(ERROR_THREE);
+                        printf("at node: %d\n", nid);
                 }
             }
-            else
-            {
-                return ERROR_THREE;
-            }
+            head = head->next;
         }
-        head = head->next;
+
+        if (node_existence == 0)
+        {
+            print_error(ERROR_FOUR);
+            printf("at node: %d\n", nid);
+        }
+        i += 1;
+
     }
-
-    if (node_existence == 0)
-        return ERROR_FOUR;
-
 
     return 0;
 }
@@ -296,7 +308,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
         i  = add_node(argc, argv, head, status);
         return i;
     }
-    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 4)
+    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0)
     {
         //printf("//run add block\n"); 
         i = add_block(argc, argv, head, status);
