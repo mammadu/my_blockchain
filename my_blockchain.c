@@ -96,7 +96,7 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
 
 //     node* original_head = address_of_head[0];
 
-//     if (argv[i] == '*')
+//     if (argv[i][0] == '*')
 //     {
 //         free_linked_list(original_head);
 //         return 0;
