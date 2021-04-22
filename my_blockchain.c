@@ -90,6 +90,46 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
+// int rm_node(int argc, char** argv, node** address_of_head, sync_status* status)
+// {
+//     int i = 2;
+
+//     node* original_head = address_of_head[0];
+
+//     if (argv[i] == '*')
+//     {
+//         free_linked_list(original_head);
+//         return 0;
+//     }
+
+//     while (i < argc)
+//     {
+//         while(*address_of_head != NULL)
+//         {
+//             int node_to_remove = my_atoi_base(argv[i], DECIMAL_BASE);
+//             if (address_of_head[0]->nid == node_to_remove) //remove head
+//             {
+//                 node* temp_to_delete = address_of_head[0];
+//                 address_of_head[0] = address_of_head[0]->next;
+//                 temp_to_delete->next = NULL;
+//                 free_linked_list(temp_to_delete);
+//                 return 0;
+//             }
+//             else if (address_of_head[0]->next->nid == node_to_remove)
+//             {
+//                 remove_next_link(address_of_head[0]);
+//             }
+//             else
+//             {
+//                 address_of_head[0] = address_of_head[0]->next;
+//                 break;
+//             }
+//         }
+//         i++;
+//     }
+//     return 0;
+// }
+
 int ls_l(int argc, char** argv, node* head, sync_status* status)
 {
     while(head != NULL)

@@ -80,6 +80,14 @@ void append_link(node* new_link, node* head)
     // new_link->next = NULL;
 }
 
+void remove_next_link(node* prior_link)
+{
+    node* temp_next = prior_link->next;
+    prior_link->next = prior_link->next->next;
+    temp_next->next = NULL;
+    free_linked_list(temp_next);
+}
+
 //Insert node in between two nodes
 void insert_link(node* new_link, node* previous_link)
 {

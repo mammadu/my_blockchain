@@ -25,6 +25,8 @@ node* prepend_link(node* new_link, node* head);
 
 void append_link(node* new_link, node* head);
 
+void remove_next_link(node* prior_link);
+
 void insert_link(node* new_link, node* previous_link);
 
 int read_list(node* head);
