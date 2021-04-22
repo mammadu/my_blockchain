@@ -94,7 +94,7 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
 // {
 //     int i = 2;
 
- //     node* original_head = address_of_head[0];
+//      node* original_head = address_of_head[0];
 
 //     if (argv[i][0] == '*')
 //     {
@@ -104,31 +104,84 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
 
 //     while (i < argc)
 //     {
-//         while(*address_of_head != NULL)
+//         while(address_of_head[0] != NULL)
 //         {
 //             int node_to_remove = my_atoi_base(argv[i], DECIMAL_BASE);
 //             if (address_of_head[0]->nid == node_to_remove) //remove head
 //             {
+//                 // printf("[debug] address of head = %p\n", original_head);
+//                 // printf("[debug] address of head->next = %p\n", original_head->next);
 //                 node* temp_to_delete = address_of_head[0];
 //                 address_of_head[0] = address_of_head[0]->next;
 //                 temp_to_delete->next = NULL;
 //                 free_linked_list(temp_to_delete);
-//                 return 0;
+//                 original_head = address_of_head[0];
+//                 // printf("[debug] address of head = %p\n", original_head);
 //             }
-//             else if (address_of_head[0]->next->nid == node_to_remove)
+//             else if (address_of_head[0]->next != NULL && address_of_head[0]->next->nid == node_to_remove)
 //             {
 //                 remove_next_link(address_of_head[0]);
 //             }
 //             else
 //             {
 //                 address_of_head[0] = address_of_head[0]->next;
-//                 break;
 //             }
 //         }
+//         address_of_head[0] = original_head;
 //         i++;
 //     }
+//     address_of_head[0] = original_head;
+//     // read_list(address_of_head[0]);
+//     // printf("[debug] address of head = %p\n", original_head);
+//     // printf("[debug] head nid = %d\n", address_of_head[0]->nid);
 //     return 0;
 // }
+
+int rm_node(int argc, char** argv, node* head, sync_status* status)
+{
+    int i = 2;
+
+    node* original_head = head;
+
+    if (argv[i][0] == '*')
+    {
+        free_linked_list(head);
+        return 0;
+    }
+
+    while (i < argc)
+    {
+        while(head != NULL)
+        {
+            int node_to_remove = my_atoi_base(argv[i], DECIMAL_BASE);
+            if (head->nid == node_to_remove) //remove head
+            {
+                node* temp_to_free = head->next; //store next link in variable
+
+                //make head point to next link items
+                head->nid = head->next->nid;
+                head->blocks = head->next->blocks;
+                head->next = head->next->next;
+
+                //free next link
+                temp_to_free->blocks = NULL;
+                temp_to_free->next = NULL;
+                free_linked_list(temp_to_free);
+            }
+            else if (head->next != NULL && head->next->nid == node_to_remove)
+            {
+                remove_next_link(head);
+            }
+            else
+            {
+                head = head->next;
+            }
+        }
+        head = original_head;
+        i++;
+    }
+    return 0;
+}
 
 int ls_l(int argc, char** argv, node* head, sync_status* status)
 {
@@ -143,7 +196,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         {
             if (head->blocks == NULL)
             {
-                printf("%d,\n", head->nid);
+                printf("%d:\n", head->nid);
             }
             while (head->blocks != NULL)
             {
@@ -166,14 +219,14 @@ int remove_block(int argc, char** argv, node* head, sync_status* status)
     //rm block bid... remove the bid identified blocks from all nodes where these blocks are present.
 
     char* bid = my_strdup(argv[2]);
-    read_list(head);
+    // read_list(head);
     
     int i = 0;
     while(head != NULL)
     {
-        printf("i = %d\n", i);
-        printf("head->nid = %d\n", head->nid);
-        printf("[DEBUG] head->blocks = %p\n", head->blocks);
+        // printf("i = %d\n", i);
+        // printf("head->nid = %d\n", head->nid);
+        // printf("[DEBUG] head->blocks = %p\n", head->blocks);
         if(head->blocks != NULL && my_strcmp(head->blocks->bid, bid) == 0) //case if the head of the block list is == bid
         {
             blocks* temp0 = head->blocks;
@@ -246,7 +299,7 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     {
         while (head != NULL)
         {
-            mini_add_block(bid, head);    
+            mini_add_block(bid, head);
             head = head->next;
         }
         return 0;
@@ -296,6 +349,7 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
         i += 1;
 
     }
+    free(bid);
 
     return 0;
 }
@@ -314,9 +368,10 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
         i = add_block(argc, argv, head, status);
         return i;
     }
-    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
+    else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc >= 3)
     {
-        printf("//run rm node \n");
+        i = rm_node(argc, argv, head, status);
+        return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
     {
@@ -332,7 +387,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
-        printf("argc = %d\n", argc);        
+        printf("argc = %d\n", argc);
         printf("//sync\n");
     }
     else
@@ -381,19 +436,17 @@ node* load_backup(sync_status* status)
     else
     {
         char* input = readline(fd);
-        // printf("input = %s\n", input);
         int loop_count = 0;
         while(input[0] != '\0')
         {
-            // printf("loop_count = %d\n", loop_count);
+            printf("%s\n", input);
             int string_count = delimiter_count(input, ' ') + 1;
+            printf("string count = %d\n", string_count);
             char** string_array = split_string(input, ' ');
             select_option(string_count, string_array, head, status);
             free_string_array(string_array, string_count);
             free(input);
             input = readline(fd);
-            // printf("loop_count = %d\n", loop_count);
-            // printf("input = %s\n", input);
             loop_count++;
         }
         free(input);

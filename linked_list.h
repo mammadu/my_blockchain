@@ -33,6 +33,8 @@ int read_list(node* head);
 
 node* return_next_link(node* link);
 
+void free_block_list(blocks* head);
+
 void free_linked_list(node* head);
 
 blocks* create_block_with_bid(char* bid);

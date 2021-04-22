@@ -288,7 +288,7 @@ char* my_itoa_base(int value, int base)
 int my_strcmp(char* param_1, char* param_2)
 {
     int i = 0;
-    while (param_1[i] != '\0' && param_2[i] != '\0')
+    while (param_1[i] != '\0' || param_2[i] != '\0')
     {
         int lex_diff = param_1[i] - param_2[i];
         if (lex_diff != 0)
@@ -370,6 +370,7 @@ void free_string_array(char** string_array, int string_count)
     int i = 0;
     while (i < string_count)
     {
+        printf("i = %d: string = %s\n", i, string_array[i]);
         free(string_array[i]);
         i++;
     }
