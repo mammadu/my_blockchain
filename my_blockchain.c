@@ -101,6 +101,10 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
         }
         else if(my_strcmp("-l", argv[1]) == 0)
         {
+            if (head->blocks == NULL)
+            {
+                printf("%d,\n", head->nid);
+            }
             while (head->blocks != NULL)
             {
                 printf("%d: %s,\n", head->nid, head->blocks->bid);
