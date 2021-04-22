@@ -43,4 +43,6 @@ int add_node(int argc, char** argv, node* head, sync_status* status);
 
 int add_block(int argc, char** argv, node* head, sync_status* status);
 
+void mini_add_block(char* bid, node* head);
+
 #endif

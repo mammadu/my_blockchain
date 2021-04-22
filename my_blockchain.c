@@ -205,6 +205,32 @@ int remove_block(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
+void mini_add_block(char* bid, node* head)
+{
+    //int check_bid(blocks* head, char* bid)
+
+    if (head->blocks != NULL && check_bid(head->blocks, bid) == 0)
+    {
+        //add block
+        blocks* new_link = malloc(sizeof(blocks));
+        new_link->bid = my_strdup(bid);
+        append_block(new_link, head->blocks);
+    }
+    else if(head->blocks == NULL && check_bid(head->blocks, bid) == 0)
+    {
+        head->blocks = malloc(sizeof(blocks));
+        head->blocks->bid = my_strdup(bid);
+        head->blocks->next = NULL;
+    }
+    else
+    {
+        print_error(ERROR_THREE);
+        printf("@ node %d\n", head->nid);
+    }
+
+}
+
+
 int add_block(int argc, char** argv, node* head, sync_status* status)
 {
     //add block bid nid
@@ -213,7 +239,11 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     
     if (my_strcmp(argv[3], "*") == 0)
     {
-        //run wildcard;
+        while (head != NULL)
+        {
+            mini_add_block(bid, head);    
+            head = head->next;
+        }
         return 0;
     }
     
