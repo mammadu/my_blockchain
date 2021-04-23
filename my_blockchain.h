@@ -45,4 +45,8 @@ int add_block(int argc, char** argv, node* head, sync_status* status);
 
 void mini_add_block(char* bid, node* head);
 
+int sync_list(int argc, char** argv, node* head, sync_status* status);
+
+blocks* sync_blocks(node* head);
+
 #endif

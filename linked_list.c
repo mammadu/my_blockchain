@@ -60,6 +60,19 @@ node* create_link_with_nid(int nid)
 // }
 
 //adds a node before another node
+int block_list_length(blocks* head)
+{
+    int i = 0;
+
+    while(head != NULL)
+    {
+        i += 1;
+        head = head->next;
+    }
+
+    return i;
+}
+
 node* prepend_link(node* new_link, node* head)
 {
     new_link->next = head;
@@ -168,5 +181,18 @@ void free_linked_list(node* head)
         free(temp->blocks);    
         head = head->next;
         free(temp);
+    }
+}
+
+void free_sync_list(blocks* head)
+{
+    blocks* temp;
+
+    while(head != NULL)
+    {
+        temp = head;
+        free(head->bid);
+        free(head);
+        head = temp->next;
     }
 }
