@@ -370,7 +370,7 @@ void free_string_array(char** string_array, int string_count)
     int i = 0;
     while (i < string_count)
     {
-        printf("i = %d: string = %s\n", i, string_array[i]);
+        // printf("i = %d: string = %s\n", i, string_array[i]);
         free(string_array[i]);
         i++;
     }
