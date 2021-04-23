@@ -160,25 +160,41 @@ node* return_next_link(node* link)
     return next_link;
 }
 
+void free_block_list(blocks* head)
+{
+    blocks* temp;
+    while (head != NULL)
+    {
+        
+        temp = head;
+        // printf("temp->bid = %s\n", temp->bid);
+        free(temp->bid);
+        head = temp->next;
+        free(temp);
+    }
+}
+
 void free_linked_list(node* head)
 {
     node* temp;
     while (head != NULL)
     {
-        int i = 0;
+        // int i = 0;
         temp = head;
         //free(temp->nid);
         //free(temp->nid);
         
-        while(head->blocks != NULL)
-        {
-            temp->blocks = head->blocks;
-            free(head->blocks);
-            head->blocks = temp->blocks->next; 
+        // while(head->blocks != NULL)
+        // {
+        //     temp->blocks = head->blocks;
+        //     free(head->blocks);
+        //     head->blocks = temp->blocks->next; 
 
-        }    
+        // }    
 
-        free(temp->blocks);    
+        // free(temp->blocks);        
+        free_block_list(temp->blocks);
+        
         head = head->next;
         free(temp);
     }
