@@ -122,6 +122,7 @@ void bubble_sort_blocks(blocks* head)
        
 }
 
+//sync list
 int sync_list(int argc, char** argv, node* head, sync_status* status)
 {
     blocks* sync_list =  sync_blocks(head);
