@@ -4,6 +4,8 @@
 #include <unistd.h>
 #include <stdio.h>
 
+typedef struct 
+
 char* my_strdup(char* param_1);
 
 char* combine_strings(char* first_string, char* second_string);

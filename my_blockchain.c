@@ -435,6 +435,18 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
+//select option will take the argument count and the string count, and the head
+//depending on the first values of the string, it will send this information into various functions
+//these functions will do actions with the linked list
+//it will then return a string array based upon actions that occurred without error
+
+//select option (5, rm node 1 2 3, head, status)
+    //read first two characters in string array to determine where to go in ifelse chain
+    //sends first two arguments followed by next arguments one by one
+        //function does operation based on argument. Return error code
+    //if error code == 0, call save to backup for that particular string combination
+    //else, call print_error based upon error code.
+
 int select_option(int argc, char** argv, node* head, sync_status* status)
 {
     int i = 0;
