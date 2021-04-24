@@ -2,6 +2,8 @@
 
 TODO:
 
-Make the different functions to interact with the save file
+Implement sync command
 
-Make a function for printing error messages
+Check syncstatus after every command
+
+remove_block needs to print out "5: block doesn't exist" when removing a block that doesn't exist
