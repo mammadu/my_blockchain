@@ -41,7 +41,7 @@ void print_error (int error);
 
 int add_node(int argc, char** argv, node* head, sync_status* status);
 
-int rm_node(int argc, char** argv, node* head, sync_status* status);
+int remove_node(int argc, char** argv, node* head, sync_status* status);
 
 int add_block(int argc, char** argv, node* head, sync_status* status);
 

@@ -180,47 +180,7 @@ int add_node(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
-// int rm_node(int argc, char** argv, node** address_of_head, sync_status* status)
-// {
-//     int i = 2;
-
- //     node* original_head = address_of_head[0];
-
-//     if (argv[i][0] == '*')
-//     {
-//         free_linked_list(original_head);
-//         return 0;
-//     }
-
-//     while (i < argc)
-//     {
-//         while(*address_of_head != NULL)
-//         {
-//             int node_to_remove = my_atoi_base(argv[i], DECIMAL_BASE);
-//             if (address_of_head[0]->nid == node_to_remove) //remove head
-//             {
-//                 node* temp_to_delete = address_of_head[0];
-//                 address_of_head[0] = address_of_head[0]->next;
-//                 temp_to_delete->next = NULL;
-//                 free_linked_list(temp_to_delete);
-//                 return 0;
-//             }
-//             else if (address_of_head[0]->next->nid == node_to_remove)
-//             {
-//                 remove_next_link(address_of_head[0]);
-//             }
-//             else
-//             {
-//                 address_of_head[0] = address_of_head[0]->next;
-//                 break;
-//             }
-//         }
-//         i++;
-//     }
-//     return 0;
-// }
-
-int rm_node(int argc, char** argv, node* head, sync_status* status)
+int remove_node(int argc, char** argv, node* head, sync_status* status)
 {
     int i = 2;
 
@@ -412,7 +372,7 @@ void mini_add_block(char* bid, node* head)
 int add_block(int argc, char** argv, node* head, sync_status* status)
 {
     //add block bid nid
-    int node_existence = 0;  
+    int node_existence = 0;
     char* bid = my_strdup(argv[2]);
     node *temp_head = head;
 
@@ -420,12 +380,12 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     {
         while (head != NULL)
         {
-            mini_add_block(bid, head);    
+            mini_add_block(bid, head);
             head = head->next;
         }
         return 0;
     }
-    
+
     int i = 3;
 
     while (i < argc)
@@ -491,7 +451,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc >= 3)
     {
-        i = rm_node(argc, argv, head, status);
+        i = remove_node(argc, argv, head, status);
         return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
@@ -635,7 +595,7 @@ int main()
             else
             {
                 print_error(error);
-            }            
+            }
             free_string_array(string_array, string_count);
         }
         else
