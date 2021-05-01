@@ -134,6 +134,7 @@ int read_blocks(blocks* head)
         my_putstr(head->bid);
         my_putstr("\n");
         head = head->next;
+        sleep(1);
     }
     return index;
 }

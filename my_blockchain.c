@@ -56,9 +56,9 @@ blocks* sync_blocks(node* head)
 
     while(head != NULL)
     {
-        printf("debug\n");
-        read_blocks(head->blocks);
-        printf("debug\n");
+        // printf("debug\n");
+        // read_blocks(head->blocks);
+        // printf("debug\n");
         if(head->blocks != NULL)
         {
             blocks* temp = head->blocks;
@@ -78,16 +78,15 @@ blocks* sync_blocks(node* head)
 
                     continue;
                 }
-
-                
+                printf("we made it bois\n");
                 append_block(head->blocks, sync_list);
-                // printf("debug\n");
-                // read_blocks(sync_list);
-                // printf("debug\n");
-                // printf("\n");
+                
+                printf("debug\n");
+                read_blocks(sync_list);
+                printf("debug\n");
+                printf("\n");
                 // printf("debug : %s\n", head->blocks->bid);
                 head->blocks = head->blocks->next;
-                printf("we made it bois\n");
             }
             // read_blocks(sync_list);
 
@@ -139,7 +138,7 @@ int sync_list(int argc, char** argv, node* head, sync_status* status)
     
     //bubble_sort_blocks(sync_list, list_len);
     
-    printf("here mammadu = %d\n", list_len);   
+    printf("here mammadu = %d\n", list_len);
     
     // debug sync_blocks;
     if(sync_list != NULL)
