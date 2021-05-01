@@ -56,45 +56,17 @@ blocks* sync_blocks(node* head)
 
     while(head != NULL)
     {
-        // printf("debug\n");
-        // read_blocks(head->blocks);
-        // printf("debug\n");
-        if(head->blocks != NULL)
+        if (sync_list == NULL)
         {
-            blocks* temp = head->blocks;
-
-            //loops inside the blocks
-            while(head->blocks != NULL)
-            {
-                printf("head->nid = %d\n", head->nid);
-                // printf("debug : %s\n", head->blocks->bid);
-                if (sync_list == NULL)
-                {
-                    if(head->blocks != NULL)
-                    {
-                        sync_list = create_block_with_bid(head->blocks->bid);
-                    }
-                    head->blocks = head->blocks->next;
-
-                    continue;
-                }
-                printf("we made it bois\n");
-                append_block(head->blocks, sync_list);
-                
-                printf("debug\n");
-                read_blocks(sync_list);
-                printf("debug\n");
-                printf("\n");
-                // printf("debug : %s\n", head->blocks->bid);
-                head->blocks = head->blocks->next;
-            }
-            // read_blocks(sync_list);
-
-            head->blocks = temp;
+            sync_list = head->blocks;
+        }
+        else
+        {
+            append_block(head->blocks, sync_list);
         }
         head = head->next;
     }
-    // read_blocks(sync_list);
+
     return sync_list;
 }
 
