@@ -45,7 +45,6 @@ void append_block(blocks* new_link, blocks* head);
 
 int block_list_length(blocks* head);
 
-void free_sync_list(blocks* head);
 
 //int read_list_on_demand(node* head, char* file_name);
 

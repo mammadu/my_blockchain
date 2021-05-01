@@ -60,6 +60,7 @@ blocks* sync_blocks(node* head)
         {
             blocks* temp = head->blocks;
 
+            //loops inside the blocks
             while(head->blocks != NULL)
             {
                 if (sync_list == NULL)
@@ -74,6 +75,7 @@ blocks* sync_blocks(node* head)
                 append_block(head->blocks, sync_list);
                 head->blocks = head->blocks->next;
             }
+            
             head->blocks = temp;
         }
         head = head->next;
@@ -82,61 +84,59 @@ blocks* sync_blocks(node* head)
     return sync_list;
 }
 
-void bubble_sort_blocks(blocks* head)
+void bubble_sort_blocks(blocks* head, int total_blocks)
 {
+    char* block_data_copy;
+    blocks* next_block;
+    blocks* current_block;
+    
+    for (int block_counter = total_blocks - 2; total_blocks >= 0; total_blocks -= 1)
+    {
+        current_block = head;
+        next_block = current_block->next;
 
-// {
-//     char* node_data_copy;
-//     node* next_node;
-//     node* current_node;
+        for (int counter = 0; counter <= block_counter; counter += 1) 
+        {
+            if (my_strcmp(current_block->bid, next_block->bid) > 0)
+            {
+                block_data_copy = my_strdup(current_block->bid); 
 
-//    for (int node_counter = total_nodes - 2; node_counter >= 0; node_counter -= 1)
-//    {
-//         current_node = start_node;
-//         next_node = current_node->nextPtr;
-//         long int node_data_sec_copy;
-//         long int node_data_nano_copy;
+                current_block->bid = my_strdup(next_block->bid);
 
-//       for (int counter = 0; counter <= node_counter; counter += 1) 
-//       {
-//         if (mystrcmp(current_node->data, next_node->data) > 0)
-//         {
-//             node_data_copy = my_strdup(current_node->data);
-//             node_data_sec_copy = current_node->time_sec; 
-//             node_data_nano_copy = current_node->time_nano_sec;
+                next_block->bid = my_strdup(block_data_copy);
 
-//             current_node->data = my_strdup(next_node->data);
-//             current_node->time_sec = next_node->time_sec;
-//             current_node->time_nano_sec = next_node->time_nano_sec;
+            }
 
-//             next_node->data = my_strdup(node_data_copy);
-//             next_node->time_sec = node_data_sec_copy;
-//             next_node->time_nano_sec = node_data_nano_copy;
-//         }
-//         current_node = next_node;
-//         next_node = next_node->nextPtr;
-//       }
-//    }
-// }
-       
+            current_block = next_block;
+            next_block = next_block->next;
+        }
+    }
 }
+       
+
+//missing to free the blocks linked list, sort the sync_list, 
+//clean the list (remove dublicates), and append it to each node
 
 int sync_list(int argc, char** argv, node* head, sync_status* status)
 {
-    blocks* sync_list =  sync_blocks(head);
+    blocks* sync_list = sync_blocks(head);
     int list_len = block_list_length(sync_list);
-    printf("%d\n", list_len);   
+    
+    //bubble_sort_blocks(sync_list, list_len);
+    
+    printf("here mammadu = %d\n", list_len);   
+    
     // debug sync_blocks;
-    // if(sync_list != NULL)
-    // {
-    //     while(sync_list != NULL)
-    //     {
-    //         printf("%s\n", sync_list->bid);
-    //         sync_list = sync_list->next;
-    //     }
-    // }
+    if(sync_list != NULL)
+    {
+        while(sync_list != NULL)
+        {
+            printf("%s\n", sync_list->bid);
+            sync_list = sync_list->next;
+        }
+    }
 
-    free_sync_list(sync_list);
+    free_block_list(sync_list);
     return 0;
 }
 

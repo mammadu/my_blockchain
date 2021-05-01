@@ -199,16 +199,3 @@ void free_linked_list(node* head)
         free(temp);
     }
 }
-
-void free_sync_list(blocks* head)
-{
-    blocks* temp;
-
-    while(head != NULL)
-    {
-        temp = head;
-        free(head->bid);
-        free(head);
-        head = temp->next;
-    }
-}
