@@ -12,7 +12,6 @@ void append_block(blocks* new_link, blocks* head)
         head = head->next;
     }
     head->next = new_link;
-    new_link->next = NULL;
 }
 
 blocks* create_block_with_bid(char* bid)
@@ -120,6 +119,19 @@ int read_list(node* head)
     {
         index++;
         my_putnbr(head->nid);
+        my_putstr("\n");
+        head = head->next;
+    }
+    return index;
+}
+
+int read_blocks(blocks* head)
+{
+    int index = 0;
+    while (head != NULL)
+    {
+        index++;
+        my_putstr(head->bid);
         my_putstr("\n");
         head = head->next;
     }

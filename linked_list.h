@@ -31,6 +31,8 @@ void insert_link(node* new_link, node* previous_link);
 
 int read_list(node* head);
 
+int read_blocks(blocks* head);
+
 node* return_next_link(node* link);
 
 void free_block_list(blocks* head);
