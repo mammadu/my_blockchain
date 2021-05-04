@@ -27,6 +27,8 @@ void append_link(node* new_link, node* head);
 
 void remove_next_link(node* prior_link);
 
+void remove_next_block(blocks* prior_link);
+
 void insert_link(node* new_link, node* previous_link);
 
 int read_list(node* head);
@@ -34,6 +36,8 @@ int read_list(node* head);
 int read_blocks(blocks* head);
 
 node* return_next_link(node* link);
+
+blocks* duplicate_block_list(blocks* head);
 
 void free_block_list(blocks* head);
 

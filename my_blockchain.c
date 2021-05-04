@@ -98,6 +98,29 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
         }
     }
 }
+
+void remove_block_duplicates(blocks* head)
+{
+    //take first node, this is unique node
+    //while unique node != NULL.
+    //unique node compare against next node
+    // if nodes are equal
+        //remove (free) next node
+    // else next node is now unique node
+    // continue until next node is null
+    blocks* unique_block = head;
+    while (unique_block != NULL && unique_block->next != NULL) //what happens if unique_block == NULL????
+    {
+        if (my_strcmp(unique_block->bid, unique_block->next->bid) == 0)
+        {
+            remove_next_block(unique_block);
+        }
+        else
+        {
+            unique_block = unique_block->next;
+        }
+    }
+}
        
 
 //missing to free the blocks linked list, sort the sync_list, 
@@ -105,16 +128,24 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
 
 int sync_list(int argc, char** argv, node* head, sync_status* status)
 {
-    printf("address of head = %p\n", head);
-    printf("address of head->next = %p\n", head->next);
+    // printf("address of head->blocks = %p\n", head->blocks);
+    // printf("address of head->block->next = %p\n", head->blocks->next);
     blocks* sync_list = sync_blocks(head);
-    printf("new address of head = %p\n", head);
-    printf("new address of head->next = %p\n", head->next);
+    // printf("new address of head->block = %p\n", head->blocks);
+    // printf("new address of head->block->next = %p\n", head->blocks->next);
     int list_len = block_list_length(sync_list);
     
-    // bubble_sort_blocks(sync_list, list_len);
-    
+    bubble_sort_blocks(sync_list, list_len);
     printf("here mammadu = %d\n", list_len);
+    remove_block_duplicates(sync_list);
+    printf("here Jairo = %d\n", list_len);
+
+    while (head != NULL)
+    {
+        free_block_list(head->blocks);
+        head->blocks = duplicate_block_list(sync_list);
+        head = head->next;
+    }
     
     // // debug sync_blocks;
     // if(sync_list != NULL)
