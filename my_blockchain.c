@@ -56,27 +56,13 @@ blocks* sync_blocks(node* head)
 
     while(head != NULL)
     {
-        if(head->blocks != NULL)
+        if (sync_list == NULL)
         {
-            blocks* temp = head->blocks;
-
-            //loops inside the blocks
-            while(head->blocks != NULL)
-            {
-                if (sync_list == NULL)
-                {
-                    if(head->blocks != NULL)
-                    {
-                        sync_list = create_block_with_bid(head->blocks->bid);
-                    }
-
-                    continue;
-                }
-                append_block(head->blocks, sync_list);
-                head->blocks = head->blocks->next;
-            }
-            
-            head->blocks = temp;
+            sync_list = head->blocks;
+        }
+        else
+        {
+            append_block(head->blocks, sync_list);
         }
         head = head->next;
     }
@@ -112,6 +98,29 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
         }
     }
 }
+
+void remove_block_duplicates(blocks* head)
+{
+    //take first node, this is unique node
+    //while unique node != NULL.
+    //unique node compare against next node
+    // if nodes are equal
+        //remove (free) next node
+    // else next node is now unique node
+    // continue until next node is null
+    blocks* unique_block = head;
+    while (unique_block != NULL && unique_block->next != NULL) //what happens if unique_block == NULL????
+    {
+        if (my_strcmp(unique_block->bid, unique_block->next->bid) == 0)
+        {
+            remove_next_block(unique_block);
+        }
+        else
+        {
+            unique_block = unique_block->next;
+        }
+    }
+}
        
 
 //missing to free the blocks linked list, sort the sync_list, 
@@ -119,22 +128,34 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
 
 int sync_list(int argc, char** argv, node* head, sync_status* status)
 {
+    // printf("address of head->blocks = %p\n", head->blocks);
+    // printf("address of head->block->next = %p\n", head->blocks->next);
     blocks* sync_list = sync_blocks(head);
+    // printf("new address of head->block = %p\n", head->blocks);
+    // printf("new address of head->block->next = %p\n", head->blocks->next);
     int list_len = block_list_length(sync_list);
     
-    //bubble_sort_blocks(sync_list, list_len);
-    
-    printf("here mammadu = %d\n", list_len);   
-    
-    // debug sync_blocks;
-    if(sync_list != NULL)
+    bubble_sort_blocks(sync_list, list_len);
+    printf("here mammadu = %d\n", list_len);
+    remove_block_duplicates(sync_list);
+    printf("here Jairo = %d\n", list_len);
+
+    while (head != NULL)
     {
-        while(sync_list != NULL)
-        {
-            printf("%s\n", sync_list->bid);
-            sync_list = sync_list->next;
-        }
+        free_block_list(head->blocks);
+        head->blocks = duplicate_block_list(sync_list);
+        head = head->next;
     }
+    
+    // // debug sync_blocks;
+    // if(sync_list != NULL)
+    // {
+    //     while(sync_list != NULL)
+    //     {
+    //         printf("%s\n", sync_list->bid);
+    //         sync_list = sync_list->next;
+    //     }
+    // }
 
     free_block_list(sync_list);
     return 0;
@@ -350,15 +371,12 @@ void mini_add_block(char* bid, node* head)
     if (head->blocks != NULL && check_bid(head->blocks, bid) == 0)
     {
         //add block
-        blocks* new_link = malloc(sizeof(blocks));
-        new_link->bid = my_strdup(bid);
+        blocks* new_link = create_block_with_bid( bid);
         append_block(new_link, head->blocks);
     }
     else if(head->blocks == NULL && check_bid(head->blocks, bid) == 0)
     {
-        head->blocks = malloc(sizeof(blocks));
-        head->blocks->bid = my_strdup(bid);
-        head->blocks->next = NULL;
+        head->blocks = create_block_with_bid(bid);
     }
     else
     {
@@ -433,6 +451,11 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     free(bid);
 
     return 0;
+}
+
+int sync_status_checker(node* head)
+{
+    
 }
 
 int select_option(int argc, char** argv, node* head, sync_status* status)
@@ -549,8 +572,8 @@ void print_error (int error)
     }
     else if (error == ERROR_THREE)
     {
-        my_putstr("this block already exists\n");
     }
+        my_putstr("this block already exists\n");
     else if (error == ERROR_FOUR)
     {
         my_putstr("node doesn't exist\n");
