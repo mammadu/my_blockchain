@@ -105,22 +105,26 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
 
 int sync_list(int argc, char** argv, node* head, sync_status* status)
 {
+    printf("address of head = %p\n", head);
+    printf("address of head->next = %p\n", head->next);
     blocks* sync_list = sync_blocks(head);
+    printf("new address of head = %p\n", head);
+    printf("new address of head->next = %p\n", head->next);
     int list_len = block_list_length(sync_list);
     
-    //bubble_sort_blocks(sync_list, list_len);
+    // bubble_sort_blocks(sync_list, list_len);
     
     printf("here mammadu = %d\n", list_len);
     
-    // debug sync_blocks;
-    if(sync_list != NULL)
-    {
-        while(sync_list != NULL)
-        {
-            printf("%s\n", sync_list->bid);
-            sync_list = sync_list->next;
-        }
-    }
+    // // debug sync_blocks;
+    // if(sync_list != NULL)
+    // {
+    //     while(sync_list != NULL)
+    //     {
+    //         printf("%s\n", sync_list->bid);
+    //         sync_list = sync_list->next;
+    //     }
+    // }
 
     free_block_list(sync_list);
     return 0;
@@ -336,15 +340,12 @@ void mini_add_block(char* bid, node* head)
     if (head->blocks != NULL && check_bid(head->blocks, bid) == 0)
     {
         //add block
-        blocks* new_link = malloc(sizeof(blocks));
-        new_link->bid = my_strdup(bid);
+        blocks* new_link = create_block_with_bid( bid);
         append_block(new_link, head->blocks);
     }
     else if(head->blocks == NULL && check_bid(head->blocks, bid) == 0)
     {
-        head->blocks = malloc(sizeof(blocks));
-        head->blocks->bid = my_strdup(bid);
-        head->blocks->next = NULL;
+        head->blocks = create_block_with_bid(bid);
     }
     else
     {
