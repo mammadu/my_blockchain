@@ -455,16 +455,19 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
 
 int sync_status_checker(node* head, sync_status* status)
 {
-    int block_list_length_current = 0;
-    int block_list_length_next = 0;
-
     while(head != NULL && head->next != NULL)
     {
-        block_list_length_current = block_list_length(head);
-        block_list_length_next = block_list_length(head->next);
-        
+        if (block_list_length(head) != block_list_length(head->next))
+        {
+            sync_status->status = '-';
+            return -1;
+        }
+
         head = head->next;
     }
+    
+    sync_status->status = 's';
+    return 0;
 }
 
 int select_option(int argc, char** argv, node* head, sync_status* status)
