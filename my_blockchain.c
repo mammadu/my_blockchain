@@ -474,21 +474,21 @@ int sync_status_checker(node* head, sync_status* status)
     {
         if (block_list_length(head) != block_list_length(head->next))
         {
-            sync_status->status = '-';
+            status->status = '-';
             return -1;
         }
         bubble_sort_blocks(head->next, block_list_length(head->next));
         
         if(my_strcmp(block_string_joint(head), block_string_joint(head->next)) != 0)
         {
-            sync_status->status = '-';
+            status->status = '-';
             return -1;
         }
 
         head = head->next;
     }
     
-    sync_status->status = 's';
+    status->status = 's';
     return 0;
 }
 
@@ -606,8 +606,9 @@ void print_error (int error)
     }
     else if (error == ERROR_THREE)
     {
-    }
         my_putstr("this block already exists\n");
+    }
+    
     else if (error == ERROR_FOUR)
     {
         my_putstr("node doesn't exist\n");
