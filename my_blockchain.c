@@ -453,6 +453,19 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
+char* block_string_joint(blocks* head)
+{
+    char* first_string = my_strdup(head->bid);
+
+    while(head != NULL)
+    {
+        first_string = combine_strings(first_string, head->next->bid);
+        head = head->next;
+    }
+    
+    return first_string;
+}
+
 int sync_status_checker(node* head, sync_status* status)
 {
     bubble_sort_blocks(head, block_list_length(head));
