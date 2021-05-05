@@ -12,3 +12,4 @@ when calling sync, nodes get new blocks... we didn't code that...
 After calling sync, calling ls -l creates a segfault
 
 Debug blocks* duplicate_block_list(blocks* head) segfaulting due to a read memory access.
+    This is most likely due to sync_blocks overwriting the values of the blocks at each node

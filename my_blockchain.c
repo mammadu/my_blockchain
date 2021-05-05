@@ -54,6 +54,9 @@ blocks* sync_blocks(node* head)
     blocks* sync_list = malloc(sizeof(blocks));
     sync_list = NULL;
 
+    printf("[debug]address of head->blocks = %p\n", head->blocks);
+    printf("[debug]address of sync_list = %p\n", head->blocks);
+
     while(head != NULL)
     {
         if (sync_list == NULL)
@@ -120,6 +123,7 @@ void remove_block_duplicates(blocks* head)
             unique_block = unique_block->next;
         }
     }
+    // read_blocks(head); //debug
 }
        
 
@@ -136,14 +140,16 @@ int sync_list(int argc, char** argv, node* head, sync_status* status)
     int list_len = block_list_length(sync_list);
     
     bubble_sort_blocks(sync_list, list_len);
-    printf("here mammadu = %d\n", list_len);
     remove_block_duplicates(sync_list);
-    printf("here Jairo = %d\n", list_len);
+    printf("[debug]here Jairo = %d\n", list_len);
 
     while (head != NULL)
     {
-        free_block_list(head->blocks);
+        blocks* temp = head->blocks;
+        printf("[debug]node %d has the following blocks\n", head->nid);
+        read_blocks(temp);
         head->blocks = duplicate_block_list(sync_list);
+        free_block_list(temp);
         head = head->next;
     }
     
