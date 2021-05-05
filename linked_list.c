@@ -107,6 +107,13 @@ void insert_link(node* new_link, node* previous_link)
     new_link->next = previous_link->next;
     previous_link->next = new_link;
 }
+void remove_next_block(blocks* prior_link)
+{
+    blocks* temp_next = prior_link->next;
+    prior_link->next = prior_link->next->next;
+    temp_next->next = NULL;
+    free_block_list(temp_next);
+}
 
 //How many links are in a given linked list
 //Prints string to console
