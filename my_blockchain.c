@@ -89,8 +89,8 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
 
                 current_block->bid = my_strdup(next_block->bid);
 
-                next_block->bid = my_strdup(block_data_copy);
 
+                next_block->bid = my_strdup(block_data_copy);
             }
 
             current_block = next_block;
@@ -455,6 +455,8 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
 
 int sync_status_checker(node* head, sync_status* status)
 {
+    bubble_sort_blocks(head, block_list_length(head));
+
     while(head != NULL && head->next != NULL)
     {
         if (block_list_length(head) != block_list_length(head->next))
@@ -462,7 +464,8 @@ int sync_status_checker(node* head, sync_status* status)
             sync_status->status = '-';
             return -1;
         }
-
+        bubble_sort_blocks(head->next, block_list_length(head->next));
+        
         head = head->next;
     }
     

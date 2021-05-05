@@ -51,4 +51,6 @@ int sync_list(int argc, char** argv, node* head, sync_status* status);
 
 blocks* sync_blocks(node* head);
 
+int sync_status_checker(node* head, sync_status* status);
+
 #endif
