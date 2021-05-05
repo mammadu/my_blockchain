@@ -479,6 +479,12 @@ int sync_status_checker(node* head, sync_status* status)
         }
         bubble_sort_blocks(head->next, block_list_length(head->next));
         
+        if(my_strcmp(block_string_joint(head), block_string_joint(head->next)) != 0)
+        {
+            sync_status->status = '-';
+            return -1;
+        }
+
         head = head->next;
     }
     

@@ -53,4 +53,7 @@ blocks* sync_blocks(node* head);
 
 int sync_status_checker(node* head, sync_status* status);
 
+char* block_string_joint(blocks* head);
+
+
 #endif
