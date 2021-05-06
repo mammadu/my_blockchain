@@ -86,6 +86,21 @@ int node_list_length(node* head)
     return i;
 }
 
+int null_list_count(node* head)
+{
+    int i = 0;
+
+    while(head != NULL)
+    {
+        if (head->blocks == NULL)
+            i += 1;
+            
+        head = head->next;
+    }
+
+    return i;
+}
+
 node* prepend_link(node* new_link, node* head)
 {
     new_link->next = head;

@@ -456,8 +456,13 @@ char* block_string_joint(blocks* head)
 {
     char* first_string = my_strdup(head->bid);
 
-    while(head != NULL)
+    if(head->next == NULL)
     {
+        return first_string;
+    }
+
+    while(head != NULL && head->next != NULL)
+    {        
         first_string = combine_strings(first_string, head->next->bid);
         head = head->next;
     }
@@ -468,16 +473,28 @@ char* block_string_joint(blocks* head)
 int sync_status_checker(node* head, sync_status* status)
 {
     //if number of nodes > 1 && there is a head->blocks* that is equal NULL return status->status = '-';
-    
+
     int node_list_size = node_list_length(head);
 
+    int null_count = null_list_count(head);
+    
     if (node_list_size < 2)
     {
         status->status = 's';
         return 0;
     }
 
+    if (null_count > 0)
+    {
+        status->status = '-';
+        return -1;
+    }
+
     int current_block_len, next_block_len;
+
+    char* current_block_str; 
+    
+    char * next_block_str;
 
     while(head != NULL && head->next != NULL)
     {
@@ -493,12 +510,18 @@ int sync_status_checker(node* head, sync_status* status)
         bubble_sort_blocks(head->blocks, current_block_len);
         bubble_sort_blocks(head->next->blocks, next_block_len);
         
-        if(my_strcmp(block_string_joint(head->blocks), block_string_joint(head->next->blocks)) != 0)
+        current_block_str = block_string_joint(head->blocks);
+        next_block_str = block_string_joint(head->next->blocks);
+
+        if(my_strcmp(current_block_str, next_block_str) != 0)
         {
             status->status = '-';
             return -1;
         }
         //...
+        free(current_block_str);
+        free(next_block_str);
+        
         head = head->next;
 
     }
@@ -520,16 +543,19 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     {
         //printf("//run add block\n"); 
         i = add_block(argc, argv, head, status);
+        sync_status_checker(head, status);
         return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc >= 3)
     {
         i = remove_node(argc, argv, head, status);
+        sync_status_checker(head, status);
         return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
     {
         i = remove_block(argc, argv, head, status);
+        sync_status_checker(head, status);
         return i;
 
     }
@@ -542,6 +568,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
         i = sync_list(argc, argv, head, status);
+        sync_status_checker(head, status);
         return i;
     }
     else

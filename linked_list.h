@@ -51,6 +51,7 @@ blocks* duplicate_block_list(blocks* head);
 
 int node_list_length(node* head);
 
+int null_list_count(node* head);
 
 //int read_list_on_demand(node* head, char* file_name);
 
