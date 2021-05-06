@@ -51,24 +51,26 @@ int sync_evaluation(node* head, sync_status* status)
 
 blocks* sync_blocks(node* head)
 {
-    blocks* sync_list = malloc(sizeof(blocks));
-    sync_list = NULL;
+    // blocks* sync_list = malloc(sizeof(blocks));
+    blocks* sync_list = NULL;
 
-    printf("[debug]address of head->blocks = %p\n", head->blocks);
-    printf("[debug]address of sync_list = %p\n", head->blocks);
+    // printf("[debug]address of head->blocks = %p\n", head->blocks);
+    // printf("[debug]address of sync_list = %p\n", head->blocks);
 
     while(head != NULL)
     {
         if (sync_list == NULL)
         {
-            sync_list = head->blocks;
+            sync_list = duplicate_block_list(head->blocks);
         }
         else
         {
-            append_block(head->blocks, sync_list);
+            blocks* temp = duplicate_block_list(head->blocks);
+            append_block(temp, sync_list);
         }
         head = head->next;
     }
+    // read_blocks(sync_list);
 
     return sync_list;
 }
@@ -89,11 +91,9 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
             if (my_strcmp(current_block->bid, next_block->bid) > 0)
             {
                 block_data_copy = my_strdup(current_block->bid); 
-
                 current_block->bid = my_strdup(next_block->bid);
-
                 next_block->bid = my_strdup(block_data_copy);
-
+                free(block_data_copy);
             }
 
             current_block = next_block;
@@ -141,13 +141,13 @@ int sync_list(int argc, char** argv, node* head, sync_status* status)
     
     bubble_sort_blocks(sync_list, list_len);
     remove_block_duplicates(sync_list);
-    printf("[debug]here Jairo = %d\n", list_len);
+    // printf("[debug]here Jairo = %d\n", list_len);
 
     while (head != NULL)
     {
         blocks* temp = head->blocks;
-        printf("[debug]node %d has the following blocks\n", head->nid);
-        read_blocks(temp);
+        // printf("[debug]node %d has the following blocks\n", head->nid);
+        // read_blocks(temp);
         head->blocks = duplicate_block_list(sync_list);
         free_block_list(temp);
         head = head->next;

@@ -198,9 +198,12 @@ blocks* duplicate_block_list(blocks* head)
         temp = create_block_with_bid(head->bid);
         if (size == 0)
         {
-            blocks* return_val = temp;
+            return_val = temp;
         }
-        temp = temp->next;
+        else
+        {
+            append_block(temp,return_val);
+        }
         head = head->next;
         size++;
         // printf("[debug]end size = %d\n", size);
