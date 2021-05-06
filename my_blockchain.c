@@ -128,7 +128,6 @@ void remove_block_duplicates(blocks* head)
 
 int sync_list(int argc, char** argv, node* head, sync_status* status)
 {
-    // printf("address of head->blocks = %p\n", head->blocks);
     // printf("address of head->block->next = %p\n", head->blocks->next);
     blocks* sync_list = sync_blocks(head);
     // printf("new address of head->block = %p\n", head->blocks);
@@ -468,24 +467,40 @@ char* block_string_joint(blocks* head)
 
 int sync_status_checker(node* head, sync_status* status)
 {
-    bubble_sort_blocks(head, block_list_length(head));
+    //if number of nodes > 1 && there is a head->blocks* that is equal NULL return status->status = '-';
+    
+    int node_list_size = node_list_length(head);
+
+    if (node_list_size < 2)
+    {
+        status->status = 's';
+        return 0;
+    }
+
+    int current_block_len, next_block_len;
 
     while(head != NULL && head->next != NULL)
     {
-        if (block_list_length(head) != block_list_length(head->next))
-        {
-            status->status = '-';
-            return -1;
-        }
-        bubble_sort_blocks(head->next, block_list_length(head->next));
+        current_block_len= block_list_length(head->blocks);
+        next_block_len = block_list_length(head->next->blocks);
         
-        if(my_strcmp(block_string_joint(head), block_string_joint(head->next)) != 0)
+        if (current_block_len != next_block_len)
         {
             status->status = '-';
             return -1;
         }
 
+        bubble_sort_blocks(head->blocks, current_block_len);
+        bubble_sort_blocks(head->next->blocks, next_block_len);
+        
+        if(my_strcmp(block_string_joint(head->blocks), block_string_joint(head->next->blocks)) != 0)
+        {
+            status->status = '-';
+            return -1;
+        }
+        //...
         head = head->next;
+
     }
     
     status->status = 's';
@@ -498,6 +513,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
         i  = add_node(argc, argv, head, status);
+        sync_status_checker(head, status);
         return i;
     }
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0)

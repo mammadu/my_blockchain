@@ -73,6 +73,19 @@ int block_list_length(blocks* head)
     return i;
 }
 
+int node_list_length(node* head)
+{
+    int i = 0;
+
+    while(head != NULL)
+    {
+        i += 1;
+        head = head->next;
+    }
+
+    return i;
+}
+
 node* prepend_link(node* new_link, node* head)
 {
     new_link->next = head;
@@ -205,4 +218,29 @@ void free_linked_list(node* head)
         head = head->next;
         free(temp);
     }
+}
+
+blocks* duplicate_block_list(blocks* head)
+{
+    // blocks* return_val = malloc(sizeof(blocks));
+    // blocks* temp = malloc(sizeof(blocks));
+    blocks* return_val;
+    blocks* temp;
+    int size = 0;
+
+    while(head != NULL)
+    {
+        // printf("[debug] head->bid = %s\n", head->bid);
+        // printf("[debug]start size = %d\n", size);
+        temp = create_block_with_bid(head->bid);
+        if (size == 0)
+        {
+            blocks* return_val = temp;
+        }
+        temp = temp->next;
+        head = head->next;
+        size++;
+        // printf("[debug]end size = %d\n", size);
+    }
+    return return_val;
 }

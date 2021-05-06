@@ -47,6 +47,11 @@ int block_list_length(blocks* head);
 
 void remove_next_block(blocks* prior_link);
 
+blocks* duplicate_block_list(blocks* head);
+
+int node_list_length(node* head);
+
+
 //int read_list_on_demand(node* head, char* file_name);
 
 #endif
