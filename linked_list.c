@@ -215,7 +215,7 @@ blocks* duplicate_block_list(blocks* head)
 {
     // blocks* return_val = malloc(sizeof(blocks));
     // blocks* temp = malloc(sizeof(blocks));
-    blocks* return_val;
+    blocks* return_val = NULL;
     blocks* temp;
     int size = 0;
 
