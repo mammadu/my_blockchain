@@ -494,12 +494,9 @@ char* block_string_joint(blocks* head)
 
 int sync_status_checker(node* head, sync_status* status)
 {
-    //if number of nodes > 1 && there is a head->blocks* that is equal NULL return status->status = '-';
-
     int node_list_size = node_list_length(head);
 
     int null_count = null_list_count(head);
-    
     if (node_list_size < 2)
     {
         status->status = 's';
@@ -518,7 +515,6 @@ int sync_status_checker(node* head, sync_status* status)
         return -1;
     }
 
-
     int current_block_len, next_block_len;
 
     char* current_block_str; 
@@ -527,9 +523,9 @@ int sync_status_checker(node* head, sync_status* status)
 
     while(head != NULL && head->next != NULL)
     {
+        //causing segfault on removing last block????????
         current_block_len= block_list_length(head->blocks);
         next_block_len = block_list_length(head->next->blocks);
-        
         if (current_block_len != next_block_len)
         {
             status->status = '-';
