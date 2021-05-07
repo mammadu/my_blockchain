@@ -16,6 +16,9 @@ char* my_strcpy(char* dst, char* src)
 char* my_strdup(char* param_1)
 {
     char* str_copy;
+    // printf("we made it bois!\n");
+    // printf("[debug] param_1 strlen = %ld\n", strlen(param_1));
+    // printf("[debug] param_1 terminator = %p\n", param_1[strlen(param_1)]);
     int length = my_strlen(param_1);
     str_copy = malloc((length + 1) * sizeof(char));
     int i = 0;

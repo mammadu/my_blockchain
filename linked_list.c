@@ -12,12 +12,14 @@ void append_block(blocks* new_link, blocks* head)
         head = head->next;
     }
     head->next = new_link;
-    new_link->next = NULL;
 }
 
 blocks* create_block_with_bid(char* bid)
 {
     blocks* new_block = malloc(sizeof(blocks));
+    // printf("[debug]strlen of bid = %d\n", my_strlen(bid));
+    // printf("[debug]bid terminator = %p\n", &bid[my_strlen(bid)]);
+    // printf("[debug]bid terminator = %p\n", bid);
     new_block->bid = my_strdup(bid);
     new_block->next = NULL;
 
@@ -129,18 +131,19 @@ void remove_next_link(node* prior_link)
     free_linked_list(temp_next);
 }
 
-//Insert node in between two nodes
-void insert_link(node* new_link, node* previous_link)
-{
-    new_link->next = previous_link->next;
-    previous_link->next = new_link;
-}
 void remove_next_block(blocks* prior_link)
 {
     blocks* temp_next = prior_link->next;
     prior_link->next = prior_link->next->next;
     temp_next->next = NULL;
     free_block_list(temp_next);
+}
+
+//Insert node in between two nodes
+void insert_link(node* new_link, node* previous_link)
+{
+    new_link->next = previous_link->next;
+    previous_link->next = new_link;
 }
 
 //How many links are in a given linked list
@@ -155,6 +158,19 @@ int read_list(node* head)
     {
         index++;
         my_putnbr(head->nid);
+        my_putstr("\n");
+        head = head->next;
+    }
+    return index;
+}
+
+int read_blocks(blocks* head)
+{
+    int index = 0;
+    while (head != NULL)
+    {
+        index++;
+        my_putstr(head->bid);
         my_putstr("\n");
         head = head->next;
     }
@@ -195,6 +211,34 @@ node* return_next_link(node* link)
     return next_link;
 }
 
+blocks* duplicate_block_list(blocks* head)
+{
+    // blocks* return_val = malloc(sizeof(blocks));
+    // blocks* temp = malloc(sizeof(blocks));
+    blocks* return_val;
+    blocks* temp;
+    int size = 0;
+
+    while(head != NULL)
+    {
+        // printf("[debug] head->bid = %s\n", head->bid);
+        // printf("[debug]start size = %d\n", size);
+        temp = create_block_with_bid(head->bid);
+        if (size == 0)
+        {
+            return_val = temp;
+        }
+        else
+        {
+            append_block(temp,return_val);
+        }
+        head = head->next;
+        size++;
+        // printf("[debug]end size = %d\n", size);
+    }
+    return return_val;
+}
+
 void free_block_list(blocks* head)
 {
     blocks* temp;
@@ -233,29 +277,4 @@ void free_linked_list(node* head)
         head = head->next;
         free(temp);
     }
-}
-
-blocks* duplicate_block_list(blocks* head)
-{
-    // blocks* return_val = malloc(sizeof(blocks));
-    // blocks* temp = malloc(sizeof(blocks));
-    blocks* return_val;
-    blocks* temp;
-    int size = 0;
-
-    while(head != NULL)
-    {
-        // printf("[debug] head->bid = %s\n", head->bid);
-        // printf("[debug]start size = %d\n", size);
-        temp = create_block_with_bid(head->bid);
-        if (size == 0)
-        {
-            blocks* return_val = temp;
-        }
-        temp = temp->next;
-        head = head->next;
-        size++;
-        // printf("[debug]end size = %d\n", size);
-    }
-    return return_val;
 }
