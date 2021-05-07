@@ -506,17 +506,18 @@ int sync_status_checker(node* head, sync_status* status)
         return 0;
     }
 
-    if (null_count > 0)
-    {
-        status->status = '-';
-        return -1;
-    }
-
     if (null_count ==  node_list_size)
     {
         status->status = 's';
         return 0;
     }
+
+    if (null_count > 0 && node_list_size != null_count)
+    {
+        status->status = '-';
+        return -1;
+    }
+
 
     int current_block_len, next_block_len;
 
