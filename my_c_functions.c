@@ -361,6 +361,7 @@ char** split_string(char* og_source_string, char delimiter)
         split_string_word(return_array[k], &source_string, delimiter);
         k++;
     }
+
     free(source_string_start);
     return return_array;
 }

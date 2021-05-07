@@ -454,15 +454,24 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
 
 char* block_string_joint(blocks* head)
 {
-    char* first_string = my_strdup(head->bid);
+    int i = 0;
+    char* first_string;
 
     if(head->next == NULL)
     {
+        first_string = my_strdup(head->bid);
         return first_string;
     }
 
     while(head != NULL && head->next != NULL)
-    {        
+    {   
+        if (i == 0)
+        {
+            first_string = combine_strings(head->bid, head->next->bid);
+            i += 1;
+            head = head->next;
+        }
+            
         first_string = combine_strings(first_string, head->next->bid);
         head = head->next;
     }
@@ -539,7 +548,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
         sync_status_checker(head, status);
         return i;
     }
-    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0)
+    else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc > 3)
     {
         //printf("//run add block\n"); 
         i = add_block(argc, argv, head, status);
