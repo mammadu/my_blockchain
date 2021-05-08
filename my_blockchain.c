@@ -380,8 +380,6 @@ int remove_block(int argc, char** argv, node* head, sync_status* status)
 
 void mini_add_block(char* bid, node* head)
 {
-    //int check_bid(blocks* head, char* bid)
-
     if (head->blocks != NULL && check_bid(head->blocks, bid) == 0)
     {
         //add block
@@ -397,7 +395,6 @@ void mini_add_block(char* bid, node* head)
         print_error(ERROR_THREE);
         printf("@ node %d\n", head->nid);
     }
-
 }
 
 
@@ -473,6 +470,7 @@ char* block_string_joint(blocks* head)
 {
     int i = 0;
     char* first_string;
+    char* temp;
 
     if(head->next == NULL)
     {    
@@ -489,9 +487,11 @@ char* block_string_joint(blocks* head)
             head = head->next;
             continue;
         }
-            
-        first_string = combine_strings(first_string, head->next->bid);
-    
+        temp = my_strdup(first_string);
+        free(first_string);
+        first_string = combine_strings(temp, head->next->bid);
+        free(temp);
+
         head = head->next;
     }
     
@@ -547,6 +547,8 @@ int sync_status_checker(node* head, sync_status* status)
         if(my_strcmp(current_block_str, next_block_str) != 0)
         {
             status->status = '-';
+            free(current_block_str);
+            free(next_block_str);
             return -1;
         }
 
@@ -567,47 +569,30 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
         i  = add_node(argc, argv, head, status);
-        sync_status_checker(head, status);
-        return i;
     }
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc > 3)
     {
-        //printf("//run add block\n"); 
         i = add_block(argc, argv, head, status);
-        sync_status_checker(head, status);
-        return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc >= 3)
     {
         i = remove_node(argc, argv, head, status);
-        sync_status_checker(head, status);
-        return i;
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
     {
         i = remove_block(argc, argv, head, status);
-        sync_status_checker(head, status);
-        return i;
-
     }
     else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
-        //we need to validate the second argument looking for a l
         i  = ls_l(argc, argv, head, status);
-        return i;
     }
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
         i = sync_list(argc, argv, head, status);
-        sync_status_checker(head, status);
-        return i;
     }
-    else
-    {
-        return ERROR_SIX;
-    }
-
-    return ERROR_SIX;//?????
+    
+    sync_status_checker(head, status);
+    return i;
 }
 
 void prompt(sync_status* status)
