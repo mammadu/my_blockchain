@@ -14,24 +14,15 @@ char* readline(int input_source)
     str[0] = '\0';
     char* character = malloc(sizeof(char));
     int characters_read = read(input_source, character, 1);
-    // printf("characters_read = %d\n", characters_read);
-    // printf("the character is %s\n", character);
-    // printf("the value of character is %d\n", character[0]);
 
     while (characters_read > 0 && character[0] != '\n')
     {
         char* temp = str; //we make a temporay string to free everything stored at that location.
         str = combine_strings(temp, character);
         free(temp);
-        // free(character);
-        // char* character = malloc(sizeof(char));
-        int characters_read = read(input_source, character, 1);
-        // printf("the character is %s\n", character);
-        // printf("the value of character is %d\n", character[0]);
-        // printf("str is %s\n", str);
     }
     free(character);
-
+    printf("str = %d\n", str[0]);
     return str; //if no characters are passed, str == "\0"
 }
 
@@ -51,11 +42,7 @@ int sync_evaluation(node* head, sync_status* status)
 
 blocks* sync_blocks(node* head)
 {
-    // blocks* sync_list = malloc(sizeof(blocks));
     blocks* sync_list = NULL;
-
-    // printf("[debug]address of head->blocks = %p\n", head->blocks);
-    // printf("[debug]address of sync_list = %p\n", head->blocks);
 
     while(head != NULL)
     {
@@ -125,14 +112,13 @@ void remove_block_duplicates(blocks* head)
             unique_block = unique_block->next;
         }
     }
-    // read_blocks(head); //debug
 }
        
 
 //missing to free the blocks linked list, sort the sync_list, 
 //clean the list (remove dublicates), and append it to each node
 
-int sync_list(int argc, char** argv, node* head, sync_status* status)
+int sync_list(node* head)
 {
     int null_count = null_list_count(head);
     int node_list_size = node_list_length(head);
@@ -154,23 +140,10 @@ int sync_list(int argc, char** argv, node* head, sync_status* status)
     while (head != NULL)
     {
         blocks* temp = head->blocks;
-        // printf("[debug]node %d has the following blocks\n", head->nid);
-        // read_blocks(temp);
         head->blocks = duplicate_block_list(sync_list);
         free_block_list(temp);
         head = head->next;
     }
-    
-    // // debug sync_blocks;
-    // if(sync_list != NULL)
-    // {
-    //     while(sync_list != NULL)
-    //     {
-    //         printf("%s\n", sync_list->bid);
-    //         sync_list = sync_list->next;
-    //     }
-    // }
-
     free_block_list(sync_list);
     return 0;
 }
@@ -186,7 +159,7 @@ int check_node_existence(node* head, int nid)
     return 0;
 }
 
-int add_node(int argc, char** argv, node* head, sync_status* status)
+int add_node(char** argv, node* head, sync_status* status)
 {
     if (my_str_is_numeric(argv[2]) == 0)
         return ERROR_SIX;
@@ -299,7 +272,7 @@ int remove_node(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
-int ls_l(int argc, char** argv, node* head, sync_status* status)
+int ls_l(char** argv, node* head, sync_status* status)
 {
     while(head != NULL && status->nodes != 0)
     {
@@ -330,7 +303,7 @@ int ls_l(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
-int remove_block(int argc, char** argv, node* head, sync_status* status)
+int remove_block(char** argv, node* head)
 {
     //rm block bid... remove the bid identified blocks from all nodes where these blocks are present.
 
@@ -398,7 +371,7 @@ void mini_add_block(char* bid, node* head)
 }
 
 
-int add_block(int argc, char** argv, node* head, sync_status* status)
+int add_block(int argc, char** argv, node* head)
 {
     //add block bid nid
     int node_existence = 0;
@@ -568,11 +541,11 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     int i = 0;
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
-        i  = add_node(argc, argv, head, status);
+        i  = add_node(argv, head, status);
     }
     else if (my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "block") == 0 && argc > 3)
     {
-        i = add_block(argc, argv, head, status);
+        i = add_block(argc, argv, head);
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "node") == 0 && argc >= 3)
     {
@@ -580,15 +553,15 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "rm") == 0 && my_strcmp(argv[1], "block") == 0 && argc == 3)
     {
-        i = remove_block(argc, argv, head, status);
+        i = remove_block(argv, head);
     }
     else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
-        i  = ls_l(argc, argv, head, status);
+        i  = ls_l(argv, head, status);
     }
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
-        i = sync_list(argc, argv, head, status);
+        i = sync_list(head);
     }
     
     sync_status_checker(head, status);
@@ -689,12 +662,9 @@ int main()
     status->status = 's';
     status->nodes = 0;
     node* head = load_backup(status);
-    // int node_count = read_list(head);
-    //head->next = NULL;
-    prompt(status); 
+    prompt(status);
 
     char* input = readline(STDIN);
-    // int space_count = delimiter_count(input, ' ');
     int error;
     
     while(input[0] == '\0' || my_strcmp(input, "quit") != 0) 

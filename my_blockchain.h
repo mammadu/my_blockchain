@@ -39,21 +39,26 @@ void save_to_backup(char* input);
 
 void print_error (int error);
 
-int add_node(int argc, char** argv, node* head, sync_status* status);
+int add_node(char** argv, node* head, sync_status* status);
 
 int remove_node(int argc, char** argv, node* head, sync_status* status);
 
-int add_block(int argc, char** argv, node* head, sync_status* status);
+int add_block(int argc, char** argv, node* head);
 
 void mini_add_block(char* bid, node* head);
 
-int sync_list(int argc, char** argv, node* head, sync_status* status);
+int sync_list(node* head);
 
 blocks* sync_blocks(node* head);
 
 int sync_status_checker(node* head, sync_status* status);
 
 char* block_string_joint(blocks* head);
+
+int remove_block(char** argv, node* head);
+
+int ls_l(char** argv, node* head, sync_status* status);
+
 
 
 #endif

@@ -17,9 +17,6 @@ void append_block(blocks* new_link, blocks* head)
 blocks* create_block_with_bid(char* bid)
 {
     blocks* new_block = malloc(sizeof(blocks));
-    // printf("[debug]strlen of bid = %d\n", my_strlen(bid));
-    // printf("[debug]bid terminator = %p\n", &bid[my_strlen(bid)]);
-    // printf("[debug]bid terminator = %p\n", bid);
     new_block->bid = my_strdup(bid);
     new_block->next = NULL;
 
@@ -230,7 +227,6 @@ blocks* duplicate_block_list(blocks* head)
         }
         head = head->next;
         size++;
-        // printf("[debug]end size = %d\n", size);
     }
     return return_val;
 }

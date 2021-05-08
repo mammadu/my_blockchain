@@ -1,14 +1,17 @@
 CC = gcc
-CFLAGS = -Wall -Wextra -Werror
-CFLAGS_MEM = -Wall -Wextra -Werror -g3 -fsanitize=address
+CFLAGS += -Wall -Wextra -g3 #-Werror
+CFLAGS_MEM = ${CFLAGS} -fsanitize=address
+NAME = my_blockchain
 
 all: my_blockchain
 
-my_blockchain: my_blockchain.o my_c_functions.o linked_list.o
+${NAME}: my_blockchain.o my_c_functions.o linked_list.o
 	${CC} -o $@ $^ ${CFLAGS_MEM}
 
 %.o: %.c %.h
-	${CC} -c $<
+	${CC} ${CFLAGS} -c $< 
 
 clean:
-	rm *.o core.* 
+	rm -f *.o core.* 
+
+re: clean ${NAME}

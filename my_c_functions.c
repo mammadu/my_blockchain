@@ -129,8 +129,6 @@ void my_putchar(char c)
 
 void my_putnbr(int nb)
 {
-    char    c;
-
     if (nb < 0)
     {
         nb = -nb;
