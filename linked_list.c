@@ -17,9 +17,6 @@ void append_block(blocks* new_link, blocks* head)
 blocks* create_block_with_bid(char* bid)
 {
     blocks* new_block = malloc(sizeof(blocks));
-    // printf("[debug]strlen of bid = %d\n", my_strlen(bid));
-    // printf("[debug]bid terminator = %p\n", &bid[my_strlen(bid)]);
-    // printf("[debug]bid terminator = %p\n", bid);
     new_block->bid = my_strdup(bid);
     new_block->next = NULL;
 
@@ -177,33 +174,6 @@ int read_blocks(blocks* head)
     return index;
 }
 
-//prints on the stdout the file_name in case it exist on archive
-// int read_list_on_demand(node* head, char* file_name)
-// {  
-//     int finding = 0;
-//     while (head != NULL)
-//     {
-        
-//         if(my_strcmp(head->bid, file_name) == 0)
-//         {
-//             my_putstr(head->bid);
-//             my_putstr("\n");
-//             finding += 1;
-//         }
-
-//         head = head->next;
-//     }
-//     if (finding == 0)
-//     {
-//         my_putstr("my_tar: ");
-//         my_putstr(file_name);
-//         my_putstr(": Not found in archive\n");
-//     }
-
-//     return finding;
-// }
-
-
 //return address of next link
 node* return_next_link(node* link)
 {
@@ -213,16 +183,12 @@ node* return_next_link(node* link)
 
 blocks* duplicate_block_list(blocks* head)
 {
-    // blocks* return_val = malloc(sizeof(blocks));
-    // blocks* temp = malloc(sizeof(blocks));
     blocks* return_val = NULL;
     blocks* temp;
     int size = 0;
 
     while(head != NULL)
     {
-        // printf("[debug] head->bid = %s\n", head->bid);
-        // printf("[debug]start size = %d\n", size);
         temp = create_block_with_bid(head->bid);
         if (size == 0)
         {
@@ -234,7 +200,6 @@ blocks* duplicate_block_list(blocks* head)
         }
         head = head->next;
         size++;
-        // printf("[debug]end size = %d\n", size);
     }
     return return_val;
 }
