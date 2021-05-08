@@ -16,6 +16,7 @@ char* my_strcpy(char* dst, char* src)
 char* my_strdup(char* param_1)
 {
     char* str_copy;
+ 
     int length = my_strlen(param_1);
     str_copy = malloc((length + 1) * sizeof(char));
     int i = 0;
@@ -349,7 +350,7 @@ char** split_string(char* og_source_string, char delimiter)
     char** return_array = malloc((string_count) * sizeof(char*));
 
     
-    int k = 0; //index of string in retun_array
+    int k = 0; //index of string in retun_arrayf
     while (my_strlen(source_string) > 0)
     {
         int j = 0; //index of character in source_string

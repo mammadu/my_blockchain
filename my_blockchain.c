@@ -51,7 +51,11 @@ int sync_evaluation(node* head, sync_status* status)
 
 blocks* sync_blocks(node* head)
 {
+    // blocks* sync_list = malloc(sizeof(blocks));
     blocks* sync_list = NULL;
+
+    // printf("[debug]address of head->blocks = %p\n", head->blocks);
+    // printf("[debug]address of sync_list = %p\n", head->blocks);
 
     while(head != NULL)
     {
@@ -66,6 +70,7 @@ blocks* sync_blocks(node* head)
         }
         head = head->next;
     }
+    // read_blocks(sync_list);
 
     return sync_list;
 }
@@ -86,7 +91,9 @@ void bubble_sort_blocks(blocks* head, int total_blocks)
             if (my_strcmp(current_block->bid, next_block->bid) > 0)
             {
                 block_data_copy = my_strdup(current_block->bid); 
+                free(current_block->bid);
                 current_block->bid = my_strdup(next_block->bid);
+                free(next_block->bid);
                 next_block->bid = my_strdup(block_data_copy);
                 free(block_data_copy);
             }
@@ -118,6 +125,7 @@ void remove_block_duplicates(blocks* head)
             unique_block = unique_block->next;
         }
     }
+    // read_blocks(head); //debug
 }
        
 
@@ -132,19 +140,36 @@ int sync_list(int argc, char** argv, node* head, sync_status* status)
     if (null_count ==  node_list_size)
         return 0;
  
+    // printf("address of head->blocks = %p\n", head->blocks);
+    // printf("address of head->block->next = %p\n", head->blocks->next);
     blocks* sync_list = sync_blocks(head);
+    // printf("new address of head->block = %p\n", head->blocks);
+    // printf("new address of head->block->next = %p\n", head->blocks->next);
     int list_len = block_list_length(sync_list);
     
     bubble_sort_blocks(sync_list, list_len);
     remove_block_duplicates(sync_list);
 
+
     while (head != NULL)
     {
         blocks* temp = head->blocks;
+        // printf("[debug]node %d has the following blocks\n", head->nid);
+        // read_blocks(temp);
         head->blocks = duplicate_block_list(sync_list);
         free_block_list(temp);
         head = head->next;
     }
+    
+    // // debug sync_blocks;
+    // if(sync_list != NULL)
+    // {
+    //     while(sync_list != NULL)
+    //     {
+    //         printf("%s\n", sync_list->bid);
+    //         sync_list = sync_list->next;
+    //     }
+    // }
 
     free_block_list(sync_list);
     return 0;
@@ -315,6 +340,9 @@ int remove_block(int argc, char** argv, node* head, sync_status* status)
     int i = 0;
     while(head != NULL)
     {
+        // printf("i = %d\n", i);
+        // printf("head->nid = %d\n", head->nid);
+        // printf("[DEBUG] head->blocks = %p\n", head->blocks);
         if(head->blocks != NULL && my_strcmp(head->blocks->bid, bid) == 0) //case if the head of the block list is == bid
         {
             blocks* temp0 = head->blocks;
@@ -387,6 +415,7 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
             mini_add_block(bid, head);
             head = head->next;
         }
+        free(bid);
         return 0;
     }
 
@@ -434,23 +463,25 @@ int add_block(int argc, char** argv, node* head, sync_status* status)
         i += 1;
 
     }
+
     free(bid);
 
     return 0;
 }
- 
+
 char* block_string_joint(blocks* head)
 {
     int i = 0;
     char* first_string;
+
     if(head->next == NULL)
-    {
+    {    
         first_string = my_strdup(head->bid);
         return first_string;
     }
 
     while(head != NULL && head->next != NULL)
-    {
+    {   
         if (i == 0)
         {
             first_string = combine_strings(head->bid, head->next->bid);
@@ -458,10 +489,12 @@ char* block_string_joint(blocks* head)
             head = head->next;
             continue;
         }
-
+            
         first_string = combine_strings(first_string, head->next->bid);
+    
         head = head->next;
     }
+    
     return first_string;
 }
 
@@ -496,7 +529,7 @@ int sync_status_checker(node* head, sync_status* status)
 
     while(head != NULL && head->next != NULL)
     {
-        //causing segfault on removing last block????????
+
         current_block_len= block_list_length(head->blocks);
         next_block_len = block_list_length(head->next->blocks);
         if (current_block_len != next_block_len)
@@ -504,8 +537,6 @@ int sync_status_checker(node* head, sync_status* status)
             status->status = '-';
             return -1;
         }
-
-        // read_blocks(head->blocks);
 
         bubble_sort_blocks(head->blocks, current_block_len);
         bubble_sort_blocks(head->next->blocks, next_block_len);
@@ -518,7 +549,7 @@ int sync_status_checker(node* head, sync_status* status)
             status->status = '-';
             return -1;
         }
-        //...
+
         free(current_block_str);
         free(next_block_str);
         
