@@ -6,7 +6,7 @@ NAME = my_blockchain
 all: my_blockchain
 
 ${NAME}: my_blockchain.o my_c_functions.o linked_list.o
-	${CC} -o $@ $^ ${CFLAGS_MEM}
+	${CC} -o $@ $^ ${CFLAGS}
 
 %.o: %.c %.h
 	${CC} ${CFLAGS} -c $< 

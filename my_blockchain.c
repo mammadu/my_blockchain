@@ -17,12 +17,15 @@ char* readline(int input_source)
 
     while (characters_read > 0 && character[0] != '\n')
     {
+        // printf("[debug]we made it bois\n");
         char* temp = str; //we make a temporay string to free everything stored at that location.
         str = combine_strings(temp, character);
+        // printf("str = %s\n", str);
         free(temp);
+        characters_read = read(input_source, character, 1);
     }
     free(character);
-    printf("str = %d\n", str[0]);
+    // printf("str = %s\n", str);
     return str; //if no characters are passed, str == "\0"
 }
 
@@ -295,6 +298,7 @@ int ls_l(char** argv, node* head, sync_status* status)
         }
         else
         {
+    // printf("[debug]we made it bois\n");
             return ERROR_SIX;
         }
         head->blocks = temp;
@@ -313,9 +317,6 @@ int remove_block(char** argv, node* head)
     int i = 0;
     while(head != NULL)
     {
-        // printf("i = %d\n", i);
-        // printf("head->nid = %d\n", head->nid);
-        // printf("[DEBUG] head->blocks = %p\n", head->blocks);
         if(head->blocks != NULL && my_strcmp(head->blocks->bid, bid) == 0) //case if the head of the block list is == bid
         {
             blocks* temp0 = head->blocks;
@@ -539,6 +540,12 @@ int sync_status_checker(node* head, sync_status* status)
 int select_option(int argc, char** argv, node* head, sync_status* status)
 {
     int i = 0;
+    //debug block
+    for (int i = 0; i < argc; i++)
+    {
+        printf("argv[%d] = %s\n", i, argv[i]);
+    }
+    //debug block
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
     {
         i  = add_node(argv, head, status);
@@ -675,6 +682,8 @@ int main()
             char** string_array = split_string(input, ' ');
 
             error = select_option(string_count, string_array, head, status);
+            printf("[debug]we made it bois\n");
+            printf("error = %d\n", error);
             if (error == 0)
             {
                 save_to_backup(input);
@@ -682,6 +691,10 @@ int main()
             else
             {
                 print_error(error);
+            }
+            for (int i; i < string_count; i++)
+            {
+                printf("string %d = %s\n", i, string_array[i]);
             }
             free_string_array(string_array, string_count);
         }
@@ -691,11 +704,10 @@ int main()
             error = ERROR_SIX;
             print_error(error);
         }
-        char* temp = input; //we make a temporay string to free everything stored at that location.
-        free(temp);
+        // char* temp = input; //we make a temporay string to free everything stored at that location.
+        // free(temp);
         prompt(status);
         input = readline(STDIN);
-        // space_count = delimiter_count(input, ' ');
     }
     free(input);
     free(status);
