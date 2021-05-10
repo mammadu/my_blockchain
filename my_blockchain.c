@@ -35,6 +35,14 @@ int input_validation(char* string)
     return validation;
 }
 
+int git_test()
+{
+    printf("whaddup\n");
+}
+
+
+
+
 /*
 int sync_evaluation(node* head, sync_status* status)
 {
