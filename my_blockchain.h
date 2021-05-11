@@ -13,6 +13,8 @@
 #define STDOUT (1)
 #define STDERR (2)
 
+#define MEMORY_RESOURCES (1024)
+
 #define ERROR_ONE (1)
 #define ERROR_TWO (2)
 #define ERROR_THREE (3)

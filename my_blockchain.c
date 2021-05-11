@@ -12,19 +12,24 @@ char* readline(int input_source)
 {
     char* str = malloc(sizeof(char)); //str is malloc'd so we can free it later
     str[0] = '\0';
-    char* character = malloc(sizeof(char));
+    // char* character = malloc(sizeof(char));
+    // char* character = '\0';
+    char character[MEMORY_RESOURCES] = {'\0'};
     int characters_read = read(input_source, character, 1);
-
+    // printf("characters_read = %d\n", characters_read);
     while (characters_read > 0 && character[0] != '\n')
     {
         // printf("[debug]we made it bois\n");
-        char* temp = str; //we make a temporay string to free everything stored at that location.
-        str = combine_strings(temp, character);
-        // printf("str = %s\n", str);
-        free(temp);
+        char* temp_str = str; //we make a temporay string to free everything stored at that location.
+        str = combine_strings(temp_str, character);
+        // printf("[debug]str = %s\n", str);
+        free(temp_str);
+        // char* temp_character = character;
+        // free(temp_character);
         characters_read = read(input_source, character, 1);
+        // printf("[debug]characters_read = %d\n", characters_read);
     }
-    free(character);
+    // free(character);
     // printf("str = %s\n", str);
     return str; //if no characters are passed, str == "\0"
 }
@@ -279,6 +284,7 @@ int ls_l(char** argv, node* head, sync_status* status)
 {
     while(head != NULL && status->nodes != 0)
     {
+        printf("[debug]argv[1] = %s\n", argv[1]);
         blocks* temp = head->blocks;
         if (!argv[1])
         {
@@ -543,7 +549,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     //debug block
     for (int i = 0; i < argc; i++)
     {
-        printf("argv[%d] = %s\n", i, argv[i]);
+        // printf("[debug]argv[%d] = %s\n", i, argv[i]);
     }
     //debug block
     if(my_strcmp(argv[0], "add") == 0 && my_strcmp(argv[1], "node") == 0 && argc == 3)
@@ -564,6 +570,7 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
+        printf("[debug]right before ls\n");
         i  = ls_l(argv, head, status);
     }
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
@@ -682,8 +689,8 @@ int main()
             char** string_array = split_string(input, ' ');
 
             error = select_option(string_count, string_array, head, status);
-            printf("[debug]we made it bois\n");
-            printf("error = %d\n", error);
+            // printf("[debug]we made it bois\n");
+            // printf("[debug]error = %d\n", error);
             if (error == 0)
             {
                 save_to_backup(input);
