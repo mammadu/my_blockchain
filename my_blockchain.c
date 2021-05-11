@@ -280,13 +280,13 @@ int remove_node(int argc, char** argv, node* head, sync_status* status)
     return 0;
 }
 
-int ls_l(char** argv, node* head, sync_status* status)
+int ls_l(int argc, char** argv, node* head, sync_status* status)
 {
     while(head != NULL && status->nodes != 0)
     {
-        printf("[debug]argv[1] = %s\n", argv[1]);
+        // printf("[debug]argv[1][0] = %d\n", argv[1][0]);
         blocks* temp = head->blocks;
-        if (!argv[1])
+        if (argc < 2)
         {
             printf("%d\n", head->nid);
         }
@@ -570,12 +570,16 @@ int select_option(int argc, char** argv, node* head, sync_status* status)
     }
     else if (my_strcmp(argv[0], "ls") == 0 && argc <= 2)
     {
-        printf("[debug]right before ls\n");
-        i  = ls_l(argv, head, status);
+        // printf("[debug]right before ls\n");
+        i  = ls_l(argc, argv, head, status);
     }
     else if (my_strcmp(argv[0], "sync") == 0 && argc == 1)
     {
         i = sync_list(head);
+    }
+    else
+    {
+        i = ERROR_SIX;
     }
     
     sync_status_checker(head, status);
@@ -686,6 +690,7 @@ int main()
         if (input_validation(input) == 0)
         {
             int string_count = delimiter_count(input, ' ') + 1;
+            // printf("string_count = %d\n", string_count);
             char** string_array = split_string(input, ' ');
 
             error = select_option(string_count, string_array, head, status);

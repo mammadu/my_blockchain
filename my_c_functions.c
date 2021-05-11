@@ -344,8 +344,8 @@ char** split_string(char* og_source_string, char delimiter)
 
     int num_of_delim = delimiter_count(source_string, delimiter);
     int string_count = num_of_delim + 1; //The total number of split strings is equal to num_of_delim + 1
-
     char** return_array = malloc((string_count) * sizeof(char*));
+    return_array[0] = NULL;
 
     
     int k = 0; //index of string in retun_arrayf

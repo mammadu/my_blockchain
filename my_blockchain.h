@@ -59,7 +59,7 @@ char* block_string_joint(blocks* head);
 
 int remove_block(char** argv, node* head);
 
-int ls_l(char** argv, node* head, sync_status* status);
+int ls_l(int argc, char** argv, node* head, sync_status* status);
 
 
 
